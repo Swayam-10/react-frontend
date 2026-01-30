@@ -9,7 +9,8 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Challenge 03: Theme Management - E2E', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    // ThemeToggle is rendered on the challenge route; theme applies app-wide
+    await page.goto('/challenge/03-state-management');
   });
 
   test('should display theme toggle button', async ({ page }) => {

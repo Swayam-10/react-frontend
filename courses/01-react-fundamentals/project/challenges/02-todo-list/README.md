@@ -8,12 +8,32 @@ Build a functional todo list where users can add, complete, and delete tasks. Cr
 - Delete button for each todo
 - Visual distinction between completed and active todos
 
+---
+
+## What you need to do (summary)
+
+1. **One file:** Implement `src/components/TodoList.tsx` (create or complete it). Do not modify App.tsx to add the component—it is already wired on the challenge route.
+2. **Component:** A single React component named exactly `TodoList`, default-exported.
+3. **State:** Use `useState` to hold an array of todo items. Each item must have: `id` (string or number), `text` (string), `completed` (boolean).
+4. **UI:** An input (e.g. placeholder "Add todo" or similar) and a button to add a todo (button text must match `/add/i`, e.g. "Add"). A list of todos; each item has a checkbox to toggle `completed` and a delete button. Completed todos must look distinct (e.g. strikethrough).
+5. **Behavior:** Add new todo from input + button; toggle completion; delete by id. Input must be controlled (value + onChange).
+6. **Code style:** TypeScript (todo type/interface), functional component, descriptive handlers (e.g. `handleAddTodo`, `handleToggleTodo`, `handleDeleteTodo`), no `console.*`, pass ESLint.
+
+If you do the above, the automated review (tests, ESLint, architecture, best practices) will pass. Anything not listed in **Technical Requirements** below is not required.
+
+---
+
+## How the app is structured
+
+- The **home page** (`/`) lists all challenges. **"View Challenge UI"** for this challenge takes you to `/challenge/02-todo-list`.
+- **App.tsx** already imports and renders `TodoList` on that route. **Do not modify App.tsx**—you only implement `src/components/TodoList.tsx`. The component is already wired; your job is to make it work.
+
 ## Instructions
 
-1. Create a `TodoList` component in `src/components/TodoList.tsx`
-2. Implement state management for the list of todos
-3. Each todo should have: `id`, `text`, `completed`
-4. Add the component to `src/App.tsx`
+1. **Do not modify App.tsx.** The `TodoList` component is already imported and rendered on `/challenge/02-todo-list`. Only implement (or complete) `src/components/TodoList.tsx`.
+2. Create (or complete) the component in `src/components/TodoList.tsx`.
+3. Implement state management for the list of todos (each todo: `id`, `text`, `completed`).
+4. Your component is already used on the challenge route—visit `/challenge/02-todo-list` (or click **View Challenge UI** for this challenge) to see your implementation.
 
 ## Visual Requirements
 
@@ -25,11 +45,28 @@ Build a functional todo list where users can add, complete, and delete tasks. Cr
 ## How to Verify
 
 1. Run `npm run dev` and open the app
-2. Navigate to `/challenge/02-todo-list` (or click "View Challenge UI" from the home page)
-3. Add a new todo - it should appear in the list
-4. Check a todo - it should show as completed (strikethrough)
-5. Click delete - the todo should be removed
+2. From the home page, click **View Challenge UI** for this challenge, or go to `/challenge/02-todo-list`
+3. Add a new todo—it should appear in the list
+4. Check a todo—it should show as completed (strikethrough)
+5. Click delete—the todo should be removed
 6. All interactions should work smoothly
+
+---
+
+## What the review checks
+
+The automated review runs in this order and only checks what is listed in **Technical Requirements** below:
+
+| Step | What it does |
+|------|----------------|
+| **Functional tests** | Vitest: input and Add button present; can add todo; can toggle completion; can delete; completed items look distinct (e.g. strikethrough). |
+| **Code quality** | ESLint on your code (no errors or warnings). |
+| **Architecture** | AST check: functional component, `useState`, array methods (e.g. map, filter), controlled input (value + onChange). |
+| **Best practices** | Heuristics: handler names, state names, TypeScript, list keys, etc. |
+| **E2E** | Playwright: open `/challenge/02-todo-list`, add/toggle/delete todos, check visual distinction. |
+| **AI review** | Optional: qualitative feedback (small % of score). |
+
+**Pass threshold:** Weighted score ≥ 60%. Meet the Technical Requirements and you pass; there are no hidden checks.
 
 ---
 
@@ -37,14 +74,14 @@ Build a functional todo list where users can add, complete, and delete tasks. Cr
 
 ### Functional Requirements
 
-1. ✅ Component must be named `TodoList`
-2. ✅ Must manage array of todos with state
-3. ✅ Each todo must have: `id`, `text`, `completed` properties
-4. ✅ Must be able to add new todos
-5. ✅ Must be able to toggle completion status
-6. ✅ Must be able to delete todos
-7. ✅ Completed todos must be visually distinct
-8. ✅ Must use proper React state management
+1. ✅ Component must be named `TodoList` (exact name).
+2. ✅ State must hold an array of todos (e.g. `useState` with array); each todo must have: `id`, `text`, `completed`.
+3. ✅ Must be able to add new todos (e.g. input + button; button name must match `/add/i` so tests find it).
+4. ✅ Must be able to toggle completion (checkbox or click; update `completed` for that todo).
+5. ✅ Must be able to delete todos (remove item from state by id).
+6. ✅ Completed todos must be visually distinct (e.g. strikethrough, different color).
+7. ✅ Input for new todo must be controlled (value tied to state, onChange updates state).
+8. ✅ Must use React state (e.g. `useState`) for the list; no class components.
 
 ### Code Quality Requirements
 
@@ -58,13 +95,13 @@ Build a functional todo list where users can add, complete, and delete tasks. Cr
 
 ### Architecture Requirements
 
-1. ✅ Component must be in `src/components/TodoList.tsx`
-2. ✅ Component must be exported as default export
-3. ✅ Must use useState for state management (array of todos)
-4. ✅ Must use proper array methods (map, filter, etc.)
-5. ✅ Event handlers must be properly defined and named
-6. ✅ Must use controlled components for input fields
-7. ✅ Must use functional component pattern (not class component)
+1. ✅ File must be exactly `src/components/TodoList.tsx` (review looks at this path).
+2. ✅ Component must be the default export.
+3. ✅ Must use `useState` for the todos array.
+4. ✅ Must use array methods (e.g. map for rendering list, filter for delete; review checks AST for map/filter).
+5. ✅ Input must be controlled: has `value` and `onChange` (or equivalent) so the review can detect controlled pattern.
+6. ✅ Must be a function component, not a class.
+7. ✅ Event handlers must be named (e.g. `handleAddTodo`, `handleToggleTodo`, `handleDeleteTodo`).
 
 ### Best Practices Requirements
 
@@ -91,15 +128,29 @@ The following industry standards will be checked:
 - **Array Operations**: Proper use of map, filter, spread operator
 - **Component Design**: Single responsibility, proper separation of concerns
 
-**Important**: Review will **ONLY check what's specified above**. No hidden requirements.
+**Important:** The review will **only** check what is specified above. There are no hidden requirements. If a requirement is unclear, treat the bullet above as the single source of truth.
 
 ---
+
+## What the tests look for (so you can sync your UI)
+
+The unit and E2E tests use these selectors. Match them so tests pass:
+
+| What | Selector / requirement |
+|------|------------------------|
+| Input for new todo | Placeholder text matching **"add todo"** (e.g. `placeholder="Add todo"`). Case-insensitive. |
+| Add button | A `<button>` (or button role) with **accessible name** matching **/add/i** (e.g. "Add", "Add Todo"). |
+| Toggle completion | A **checkbox** (`role="checkbox"`) for each todo so users can mark it complete. |
+| Delete button | A button with name matching **/delete/i** (e.g. "Delete", "Remove") per todo item. |
+| Completed styling | Completed todos must be **visually distinct** (e.g. strikethrough, different color). E2E checks for `text-decoration: line-through` or similar. |
+
+Use `data-testid="todo-list"` on the container if you want (optional); tests don’t require it. List items should be in a list (e.g. `<ul>`/`<li>`) with a checkbox and delete button per item.
 
 ## Learning Hints (no solution code)
 
 - **State for the list**: Use `useState` with an array of items. Each item needs `id`, `text`, `completed` (see Technical Requirements above).
-- **Adding todos**: Controlled input + button or form submit. Tests look for an input (placeholder "add todo") and a button with name matching /add/i.
-- **Toggling and deleting**: Update state by id (toggle `completed`, or filter out for delete). Completed items must be visually distinct (e.g. strikethrough).
+- **Adding todos**: Controlled input + button or form submit. Use placeholder like "Add todo" and a button with text "Add" (or similar matching /add/i).
+- **Toggling and deleting**: Use a checkbox (role="checkbox") per todo for completion; a button with "Delete" or "Remove" per todo. Completed items must be visually distinct (e.g. strikethrough).
 
 ## Next Steps
 

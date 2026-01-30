@@ -26,6 +26,17 @@ describe('Challenge 01: User Profile Component', () => {
     expect(screen.getByText('john@example.com')).toBeInTheDocument();
   });
 
+  it('should display avatar or placeholder', () => {
+    // README: "Profile picture (or placeholder)" - either img (avatar) or placeholder must be present
+    const { rerender } = render(<UserProfile name={mockUser.name} email={mockUser.email} />);
+    expect(screen.getByTestId('user-profile-avatar')).toBeInTheDocument();
+
+    rerender(<UserProfile name={mockUser.name} email={mockUser.email} avatar={mockUser.avatar} />);
+    const avatarImg = screen.getByRole('img', { name: /profile/i });
+    expect(avatarImg).toBeInTheDocument();
+    expect(avatarImg).toHaveAttribute('src', mockUser.avatar);
+  });
+
   it('should render follow button', () => {
     render(<UserProfile name={mockUser.name} email={mockUser.email} />);
     expect(screen.getByRole('button', { name: /follow/i })).toBeInTheDocument();

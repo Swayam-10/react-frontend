@@ -37,8 +37,18 @@ console.log('🚀 Challenge Engine - Complete Setup\n');
 console.log('This will install all dependencies and Playwright browsers.');
 console.log('This may take a few minutes...\n');
 
-// Step 1: Install root dependencies (dashboard)
-console.log('📦 Step 1/4: Installing dashboard dependencies...');
+// Step 1: Install root dependencies (needed for e.g. concurrently, npm run dashboard:dev)
+console.log('📦 Step 1/6: Installing root dependencies...');
+try {
+  execSync('npm install', { cwd: REPO_ROOT, stdio: 'inherit' });
+  console.log('✅ Root dependencies installed\n');
+} catch (error) {
+  console.error('❌ Failed to install root dependencies');
+  process.exit(1);
+}
+
+// Step 2: Install dashboard dependencies
+console.log('📦 Step 2/6: Installing dashboard dependencies...');
 try {
   execSync('npm install', { cwd: join(REPO_ROOT, 'dashboard', 'app'), stdio: 'inherit' });
   console.log('✅ Dashboard dependencies installed\n');
@@ -47,8 +57,8 @@ try {
   process.exit(1);
 }
 
-// Step 2: Install all course project dependencies
-console.log('📦 Step 2/5: Installing course project dependencies...');
+// Step 3: Install all course project dependencies
+console.log('📦 Step 3/6: Installing course project dependencies...');
 for (const course of courses) {
   const projectDir = join(REPO_ROOT, 'courses', course, 'project');
   if (existsSync(join(projectDir, 'package.json'))) {
@@ -63,8 +73,8 @@ for (const course of courses) {
 }
 console.log('');
 
-// Step 3: Install review engine dependencies
-console.log('📦 Step 3/5: Installing review engine dependencies...');
+// Step 4: Install review engine dependencies
+console.log('📦 Step 4/6: Installing review engine dependencies...');
 for (const course of courses) {
   const reviewEngineDir = join(REPO_ROOT, 'courses', course, 'review-engine');
   if (existsSync(join(reviewEngineDir, 'package.json'))) {
@@ -79,8 +89,8 @@ for (const course of courses) {
 }
 console.log('');
 
-// Step 4: Install Playwright browsers for all courses
-console.log('🌐 Step 4/5: Installing Playwright browsers (this may take a few minutes)...');
+// Step 5: Install Playwright browsers for all courses
+console.log('🌐 Step 5/6: Installing Playwright browsers (this may take a few minutes)...');
 for (const course of courses) {
   const projectDir = join(REPO_ROOT, 'courses', course, 'project');
   if (existsSync(join(projectDir, 'playwright.config.ts')) || existsSync(join(projectDir, 'playwright.config.js'))) {
@@ -96,8 +106,8 @@ for (const course of courses) {
 }
 console.log('');
 
-// Step 5: Configure git remotes (for learners)
-console.log('🔗 Step 5/5: Configuring git remotes (for learners)...');
+// Step 6: Configure git remotes (for learners)
+console.log('🔗 Step 6/6: Configuring git remotes (for learners)...');
 runRemotesSetup()
   .then(() => {
     console.log('');

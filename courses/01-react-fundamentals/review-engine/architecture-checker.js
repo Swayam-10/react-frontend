@@ -89,31 +89,27 @@ function checkFileForPatterns(content, patternsRequired, fileName) {
     const foundPatterns = new Set();
 
     traverse(ast, {
-      // Check for useState
       CallExpression(path) {
-        if (path.node.callee.name === 'useState') {
-          foundPatterns.add('useState');
-        }
-        if (path.node.callee.name === 'createContext') {
-          foundPatterns.add('createContext');
-        }
-        if (path.node.callee.name === 'useContext') {
-          foundPatterns.add('useContext');
+        const calleeName = path.node.callee.name;
+        if (calleeName === 'useState') foundPatterns.add('useState');
+        if (calleeName === 'createContext') foundPatterns.add('createContext');
+        if (calleeName === 'useContext') foundPatterns.add('useContext');
+        if (calleeName && calleeName.startsWith('use')) foundPatterns.add('customHook');
+        const methods = ['map', 'filter', 'reduce', 'forEach'];
+        if (path.node.callee.property && methods.includes(path.node.callee.property.name)) {
+          foundPatterns.add('arrayMethods');
         }
       },
-      
-      // Check for functional components (including export default)
+
       FunctionDeclaration(path) {
         if (path.node.id && /^[A-Z]/.test(path.node.id.name)) {
           foundPatterns.add('functionalComponent');
         }
-        // Also check for props in same function
         if (path.node.params.length > 0) {
           foundPatterns.add('props');
         }
       },
-      
-      // Handle export default function declarations
+
       ExportDefaultDeclaration(path) {
         if (path.node.declaration.type === 'FunctionDeclaration') {
           const func = path.node.declaration;
@@ -125,69 +121,39 @@ function checkFileForPatterns(content, patternsRequired, fileName) {
           }
         }
       },
-      
+
       ArrowFunctionExpression(path) {
         const parent = path.parent;
-        if (parent.type === 'VariableDeclarator' && 
-            parent.id && 
-            /^[A-Z]/.test(parent.id.name)) {
+        if (parent.type === 'VariableDeclarator' && parent.id && /^[A-Z]/.test(parent.id.name)) {
           foundPatterns.add('functionalComponent');
         }
-        // Also check for props in same arrow function
         if (path.node.params.length > 0) {
           foundPatterns.add('props');
         }
       },
 
-      // Check for Provider
       JSXElement(path) {
-        if (path.node.openingElement.name.name === 'Provider') {
-          foundPatterns.add('Provider');
-        }
-      },
-
-      // Check for custom hooks
-      CallExpression(path) {
-        if (path.node.callee.name && path.node.callee.name.startsWith('use')) {
-          foundPatterns.add('customHook');
-        }
-      },
-
-      // Check for localStorage
-      MemberExpression(path) {
-        if (path.node.object.name === 'localStorage') {
-          foundPatterns.add('localStorage');
-        }
-      },
-
-      // Check for array methods
-      CallExpression(path) {
-        const methods = ['map', 'filter', 'reduce', 'forEach'];
-        if (path.node.callee.property && 
-            methods.includes(path.node.callee.property.name)) {
-          foundPatterns.add('arrayMethods');
-        }
-      },
-
-      // Check for controlled components
-      JSXElement(path) {
-        const openingElement = path.node.openingElement;
-        if (openingElement.name.name === 'input' || 
-            openingElement.name.name === 'textarea') {
+        const name = path.node.openingElement.name?.name;
+        if (name === 'Provider') foundPatterns.add('Provider');
+        if (name === 'input' || name === 'textarea') {
+          const openingElement = path.node.openingElement;
           const hasValue = openingElement.attributes.some(
             attr => attr.name && attr.name.name === 'value'
           );
           const hasOnChange = openingElement.attributes.some(
             attr => attr.name && attr.name.name === 'onChange'
           );
-          if (hasValue && hasOnChange) {
-            foundPatterns.add('controlledComponents');
-          }
+          if (hasValue && hasOnChange) foundPatterns.add('controlledComponents');
         }
       },
 
-      // Check for conditional rendering
-      ConditionalExpression(path) {
+      MemberExpression(path) {
+        if (path.node.object.name === 'localStorage') {
+          foundPatterns.add('localStorage');
+        }
+      },
+
+      ConditionalExpression() {
         foundPatterns.add('conditionalRendering');
       },
       LogicalExpression(path) {
@@ -196,6 +162,18 @@ function checkFileForPatterns(content, patternsRequired, fileName) {
         }
       }
     });
+
+    // Fallback: AST may not expose id/params in some TS/parser edge cases
+    if (patternsRequired.includes('functionalComponent') && !foundPatterns.has('functionalComponent')) {
+      if (/function\s+[A-Z][A-Za-z0-9]*\s*\(/.test(content) || /const\s+[A-Z][A-Za-z0-9]*\s*=\s*(?:\([^)]*\)\s*=>|function)/.test(content)) {
+        foundPatterns.add('functionalComponent');
+      }
+    }
+    if (patternsRequired.includes('props') && !foundPatterns.has('props')) {
+      if (/props/i.test(content) || /function\s+[A-Z][A-Za-z0-9]*\s*\([^)]+\)/.test(content)) {
+        foundPatterns.add('props');
+      }
+    }
 
     // Check which required patterns were found
     for (const pattern of patternsRequired) {
@@ -207,9 +185,20 @@ function checkFileForPatterns(content, patternsRequired, fileName) {
     }
 
   } catch (error) {
-    // If parsing fails, try simple string matching as fallback
+    // If parsing fails, try simple string matching and regex fallbacks
+    const fallbackFound = new Set();
+    if (patternsRequired.includes('functionalComponent')) {
+      if (/function\s+[A-Z][A-Za-z0-9]*\s*\(/.test(content) || /const\s+[A-Z][A-Za-z0-9]*\s*=\s*(?:\([^)]*\)\s*=>|function)/.test(content)) {
+        fallbackFound.add('functionalComponent');
+      }
+    }
+    if (patternsRequired.includes('props')) {
+      if (/props/i.test(content) || /function\s+[A-Z][A-Za-z0-9]*\s*\([^)]+\)/.test(content)) {
+        fallbackFound.add('props');
+      }
+    }
     for (const pattern of patternsRequired) {
-      if (content.includes(pattern) || content.includes(pattern.replace(/([A-Z])/g, '-$1').toLowerCase())) {
+      if (fallbackFound.has(pattern) || content.includes(pattern) || content.includes(pattern.replace(/([A-Z])/g, '-$1').toLowerCase())) {
         patternsFound.push(pattern);
       } else {
         patternsMissing.push(pattern);

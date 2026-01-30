@@ -566,6 +566,9 @@ export default function App() {
                   {detail.passed ? '✓ Passed' : detail.score != null ? '✗ Not passed' : '○ Not run'}
                 </span>
                 {detail.score != null && <span className="detail-score">Score: {Math.round(detail.score)}%</span>}
+                {detail.lastRun && (
+                  <span className="detail-score">Last run: {new Date(detail.lastRun).toLocaleString()}</span>
+                )}
               </div>
               {detail.score != null && (
                 <div className="challenge-score-progress" style={{ marginTop: '0.75rem' }}>

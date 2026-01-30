@@ -9,7 +9,8 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Challenge 02: Todo List Application - E2E', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    // TodoList is rendered on the challenge route, not the home page
+    await page.goto('/challenge/02-todo-list');
   });
 
   test('should display todo input field', async ({ page }) => {

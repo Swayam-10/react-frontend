@@ -112,8 +112,11 @@ function checkFileBestPractices(content, fileName, requirements) {
     // Check for functional component requirement
     if (reqLower.includes('functional component') || reqLower.includes('functional component pattern')) {
       totalChecks++;
-      const hasFunctionalComponent = /export\s+(default\s+)?(function|const)\s+[A-Z]/.test(content) || 
-                                      /const\s+[A-Z]\w+\s*=\s*\(/.test(content);
+      // Match: export default function Foo, export function Foo, function Foo(...) + export default Foo, or const Foo = (...)
+      const hasFunctionalComponent =
+        /export\s+(default\s+)?(function|const)\s+[A-Z]/.test(content) ||
+        /const\s+[A-Z][A-Za-z0-9]*\s*=\s*\(/.test(content) ||
+        /function\s+[A-Z][A-Za-z0-9]*\s*\(/.test(content);
       if (hasFunctionalComponent) {
         passedChecks++;
       } else {

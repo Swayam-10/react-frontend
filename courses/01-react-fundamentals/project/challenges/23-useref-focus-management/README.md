@@ -8,6 +8,8 @@
 
 Use **useRef** to control focus: when the user is on this challenge's view (task list with filter bar and search), **focus the search input** when the filter bar is shown so they can type immediately. This teaches `useRef`, `.current`, and DOM focus.
 
+**In practice.** `useRef` holds a mutable value that doesn't trigger re-renders; attaching it to a DOM node gives you direct access (e.g. `.current.focus()`). Use it when you need to read or mutate the DOM (focus, scroll, measurements) or keep a stable reference across renders. In production, focus management improves accessibility and UX (e.g. modals, search panels); avoid using refs for data that should drive UI—use state instead.
+
 ## What to do
 
 1. **Ref for search input** — In `FilterBar`, create a ref with **useRef**: e.g. `const searchInputRef = useRef<HTMLInputElement>(null)`. Attach it to the search input: `ref={searchInputRef}`. Keep the input's `id="search-input"` so tests can find it.

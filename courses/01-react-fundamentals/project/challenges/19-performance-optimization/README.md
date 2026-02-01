@@ -6,6 +6,8 @@
 
 Optimize performance: wrap TaskCard with **React.memo**; use **useCallback** for functions passed to children; use **useMemo** for filter/search/sort computations. Ensure no functionality is broken.
 
+**In practice.** Use these only when you measure a real performance issue: `React.memo` avoids re-renders when props are unchanged; `useCallback`/`useMemo` keep referential equality so memoized children don't re-render unnecessarily. In production, apply them to hot paths (long lists, heavy computations); overusing them adds complexity without benefit.
+
 ## What to do
 
 1. **React.memo (TaskCard)** — Wrap the TaskCard component with `React.memo` so it only re-renders when its props change. Export: `export default React.memo(TaskCard)`. Ensure props are compared correctly (primitives and stable callbacks).

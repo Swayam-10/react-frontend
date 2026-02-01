@@ -6,6 +6,8 @@
 
 Add a **StatsPanel** above the task list showing: total tasks, completed (with percentage), active, overdue. Use `useMemo` to compute statistics so they don't recalculate on every render when tasks haven't changed.
 
+**In practice.** `useMemo` caches a computed value and only recomputes when its dependencies change. Use it when the computation is non-trivial (aggregations, filters, sorts) and the same inputs would produce the same output. In production, this avoids redundant work on every render and keeps expensive derivations predictable and testable.
+
 ## What to do
 
 1. **StatsPanel** — Create `src/components/StatsPanel.tsx`. Accept `tasks` (or a pre-computed stats object). Display: Total tasks, Completed (count and percentage), Active (incomplete), Overdue (incomplete and past due date). Use `id="stats-panel"` for the root. Show completion percentage with a progress bar (e.g. `<div role="progressbar">` or a bar with width based on percentage).

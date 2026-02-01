@@ -8,6 +8,8 @@
 
 Create a view that **fetches** a list of items from an API, shows a **loading** state while the request is in progress, shows an **error** state if the request fails, and displays the **data** when successful. Use `fetch` and `useEffect`. This challenge teaches real-world async data loading.
 
+**In practice.** Async data in React is usually done in `useEffect`: trigger fetch on mount (or when deps change), set loading/error/data in state, and clean up (e.g. AbortController) to avoid setting state after unmount. In production, always show loading and error states so the UI never appears broken or stuck; cleanup prevents memory leaks and React warnings.
+
 ## What to do
 
 1. **API** — Use the mock API at **`/api/todos.json`** (static JSON in the project's `public/api` folder). It returns an array of items with `id` and `title`. Fetch from this URL when the component mounts.

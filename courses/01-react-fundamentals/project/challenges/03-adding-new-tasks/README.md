@@ -6,6 +6,8 @@
 
 Add a **TaskForm**: controlled inputs (title, description, priority dropdown), "Add Task" button, unique IDs for new tasks, validation for empty title, and clear form after submit.
 
+**In practice.** Controlled components (input value tied to state + onChange) are the standard in React for forms. They give you a single source of truth, validation before submit, and consistent behavior across browsers. In production, controlled inputs plus local state (or form libraries) are how most forms are built.
+
 ## What to do
 
 1. **TaskForm** — Create `src/components/TaskForm.tsx`.  

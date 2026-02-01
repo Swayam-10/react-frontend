@@ -1,156 +1,34 @@
 {
-  "lastUpdated": "2026-01-31T17:46:13.757Z",
+  "lastUpdated": "2026-02-01T08:58:14.436Z",
   "pathway": {
     "name": "Modern React Engineer",
     "version": "1.0.0",
-    "overallScore": 37.6,
-    "completionPercentage": 24.1,
+    "overallScore": 0,
+    "completionPercentage": 0,
     "badgeLevel": "none",
     "totalChallenges": 29,
-    "completedChallenges": 7
+    "completedChallenges": 0
   },
   "courses": {
     "01-react-fundamentals": {
       "courseId": "01-react-fundamentals",
       "courseName": "React Fundamentals",
-      "averageScore": 97.5,
-      "completionPercentage": 30.4,
+      "averageScore": 0,
+      "completionPercentage": 0,
       "badgeLevel": "none",
       "totalChallenges": 23,
-      "completedChallenges": 7,
-      "challenges": {
-        "02-dynamic-task-rendering": {
-          "challengeId": "02-dynamic-task-rendering",
-          "challengeName": "Dynamic Task Rendering",
-          "passed": true,
-          "score": 98.2,
-          "lastRun": "2026-01-31T16:08:14.938Z",
-          "scores": {
-            "functionalTests": 100,
-            "codeQuality": 100,
-            "architecture": 100,
-            "bestPractices": 100,
-            "e2eTests": 100,
-            "aiReview": 88
-          }
-        },
-        "03-adding-new-tasks": {
-          "challengeId": "03-adding-new-tasks",
-          "challengeName": "Adding New Tasks",
-          "passed": true,
-          "score": 98.2,
-          "lastRun": "2026-01-31T16:12:07.646Z",
-          "scores": {
-            "functionalTests": 100,
-            "codeQuality": 100,
-            "architecture": 100,
-            "bestPractices": 100,
-            "e2eTests": 100,
-            "aiReview": 88
-          }
-        },
-        "01-static-task-display": {
-          "challengeId": "01-static-task-display",
-          "challengeName": "Static Task Display",
-          "passed": true,
-          "score": 98.2,
-          "lastRun": "2026-01-31T16:55:55.746Z",
-          "scores": {
-            "functionalTests": 100,
-            "codeQuality": 100,
-            "architecture": 100,
-            "bestPractices": 100,
-            "e2eTests": 100,
-            "aiReview": 88
-          }
-        },
-        "22-data-fetching": {
-          "challengeId": "22-data-fetching",
-          "challengeName": "Data Fetching - Loading and Error State",
-          "passed": true,
-          "score": 98.2,
-          "lastRun": "2026-01-31T17:36:16.277Z",
-          "scores": {
-            "functionalTests": 100,
-            "codeQuality": 100,
-            "architecture": 100,
-            "bestPractices": 100,
-            "e2eTests": 100,
-            "aiReview": 88
-          }
-        },
-        "23-useref-focus-management": {
-          "challengeId": "23-useref-focus-management",
-          "challengeName": "useRef - Focus Management",
-          "passed": true,
-          "score": 93.205,
-          "lastRun": "2026-01-31T17:40:52.107Z",
-          "scores": {
-            "functionalTests": 100,
-            "codeQuality": 100,
-            "architecture": 100,
-            "bestPractices": 100,
-            "e2eTests": 66.7,
-            "aiReview": 88
-          }
-        },
-        "21-react-router": {
-          "challengeId": "21-react-router",
-          "challengeName": "React Router - Routing and Navigation",
-          "passed": true,
-          "score": 98.2,
-          "lastRun": "2026-01-31T17:43:20.567Z",
-          "scores": {
-            "functionalTests": 100,
-            "codeQuality": 100,
-            "architecture": 100,
-            "bestPractices": 100,
-            "e2eTests": 100,
-            "aiReview": 88
-          }
-        },
-        "04-task-completion-toggle": {
-          "challengeId": "04-task-completion-toggle",
-          "challengeName": "Task Completion Toggle",
-          "passed": true,
-          "score": 98.2,
-          "lastRun": "2026-01-31T17:45:40.753Z",
-          "scores": {
-            "functionalTests": 100,
-            "codeQuality": 100,
-            "architecture": 100,
-            "bestPractices": 100,
-            "e2eTests": 100,
-            "aiReview": 88
-          }
-        }
-      }
+      "completedChallenges": 0,
+      "challenges": {}
     },
     "02-rtk-query": {
       "courseId": "02-rtk-query",
       "courseName": "RTK Query",
-      "averageScore": 16.4,
+      "averageScore": 0,
       "completionPercentage": 0,
       "badgeLevel": "none",
       "totalChallenges": 3,
       "completedChallenges": 0,
-      "challenges": {
-        "01-api-setup": {
-          "challengeId": "01-api-setup",
-          "challengeName": "API Setup and Basic Fetching",
-          "passed": false,
-          "score": 16.39,
-          "lastRun": "2026-01-31T16:07:56.888Z",
-          "scores": {
-            "functionalTests": 0,
-            "codeQuality": 50,
-            "architecture": 0,
-            "bestPractices": 88.9,
-            "e2eTests": 0,
-            "aiReview": 0
-          }
-        }
-      }
+      "challenges": {}
     },
     "03-nextjs-app-router": {
       "courseId": "03-nextjs-app-router",

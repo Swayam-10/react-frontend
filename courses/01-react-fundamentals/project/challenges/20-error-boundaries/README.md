@@ -6,6 +6,8 @@
 
 Add error handling: an **ErrorBoundary** class component that catches rendering errors and shows fallback UI; wrap TaskList (or task list area) in it; add try/catch for localStorage operations; handle invalid JSON gracefully.
 
+**In practice.** Error boundaries catch JavaScript errors in the tree below them and show fallback UI instead of a blank screen. They don't catch event-handler or async errors—use try/catch there. In production, wrapping route-level or feature-level subtrees in boundaries limits blast radius and gives users a way to recover (e.g. Retry) instead of losing the whole app.
+
 ## What to do
 
 1. **ErrorBoundary** — Create `src/components/ErrorBoundary.tsx` as a **class component**. Implement `static getDerivedStateFromError` and/or `componentDidCatch` to set state with `hasError: true`. In render, if `hasError`, show fallback UI with text like "Something went wrong" (tests match case-insensitively) and a "Retry" button that resets error state (`setState({ hasError: false })`). Use `id="error-boundary-fallback"` for the fallback container and `id="error-retry"` for the Retry button so tests can find them.

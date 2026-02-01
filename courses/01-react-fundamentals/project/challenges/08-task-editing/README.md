@@ -6,6 +6,8 @@
 
 Add inline editing: an Edit button on each TaskCard; clicking it shows editable fields (title, description, priority) with Save and Cancel. Only one task can be in edit mode at a time. Save updates state; Cancel reverts and exits edit mode.
 
+**In practice.** Edit-in-place uses the same controlled-input pattern as forms: one source of truth, clear save/cancel, and no stale UI. In production, inline editing reduces context switching and keeps the user on the same screen; consistent state updates avoid bugs when multiple fields or validations are involved.
+
 ## What to do
 
 1. **TaskCard** — Add an "Edit" button. When clicked, switch to edit mode: show inputs/textarea/dropdown pre-filled with current title, description, priority. Show "Save" and "Cancel" buttons. Save: validate title non-empty; call `onUpdateTask(id, { title, description, priority })` and exit edit mode. Cancel: discard changes and exit edit mode. Use local state or a callback to track which task is being edited.

@@ -6,6 +6,8 @@
 
 Refactor task state management to use **useReducer** instead of useState for tasks. Define a reducer with actions: ADD_TASK, UPDATE_TASK, DELETE_TASK, TOGGLE_TASK, SET_TASKS (for initialization). Use action constants and optional action creators.
 
+**In practice.** `useReducer` fits when one state object has many update cases or the next state depends on the previous in a structured way. Reducers are pure and easy to test; dispatch is stable. In production, complex forms, lists with multiple actions, or state machines often use useReducer (or Redux) to keep updates predictable and debuggable.
+
 ## What to do
 
 1. **Action types** — Define constants: `ADD_TASK`, `UPDATE_TASK`, `DELETE_TASK`, `TOGGLE_TASK`, `SET_TASKS`. Use them in the reducer and when dispatching to avoid typos.

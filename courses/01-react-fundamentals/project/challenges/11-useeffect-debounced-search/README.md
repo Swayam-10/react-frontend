@@ -6,6 +6,8 @@
 
 Debounce the search input: delay applying the search by 300ms after the user stops typing. Show a "Searching..." indicator during the delay. Use `useEffect` with a cleanup function to cancel pending timeouts and avoid memory leaks.
 
+**In practice.** Debouncing defers an action until after a quiet period, so you don't run expensive work (or API calls) on every keystroke. In production, cleanup in `useEffect` (clear timeout, abort fetch) is required to avoid memory leaks and updating state after unmount; this pattern is common for search, resize handlers, and any async effect.
+
 ## What to do
 
 1. **Debounce logic** — Hold the raw search input value in state. Use a separate state (or derived value) for the "effective" search term that drives filtering. In a `useEffect`, when the raw value changes, set a timeout (300ms) to update the effective search term. Return a cleanup function that clears the timeout so previous timeouts don't run after unmount or when the value changes again.

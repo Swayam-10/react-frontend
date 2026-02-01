@@ -6,6 +6,8 @@
 
 Add dark/light theme switching using React Context. Create a ThemeContext with Provider; add a theme toggle in the header (or above the list); apply theme to all components; persist theme choice in localStorage.
 
+**In practice.** Context is for data that many components need without passing props through every level (e.g. theme, locale, auth). Use it when prop drilling becomes noisy or the same value is read in many places. In production, a small context (theme, user) keeps the tree simple; avoid putting frequently changing data in context or every consumer re-renders.
+
 ## What to do
 
 1. **ThemeContext** — Create `src/contexts/ThemeContext.tsx` (or `src/contexts/ThemeContext.ts`). Use `createContext` for theme state: e.g. `'light' | 'dark'`. Provide a value object: `{ theme, setTheme, toggleTheme }`. Wrap the app (or the relevant subtree) with a Provider that holds theme state (`useState`) and provides it.

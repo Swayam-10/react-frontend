@@ -6,6 +6,8 @@
 
 Persist tasks across page refreshes using `useEffect` and `localStorage`. Save tasks whenever they change; load tasks from storage on mount. Handle missing or invalid data gracefully.
 
+**In practice.** `useEffect` is for side effects that depend on React state or props (e.g. syncing to localStorage, subscriptions, or APIs). You run logic after render and optionally clean up on unmount or when deps change. In production, persisting to localStorage in an effect keeps the UI in sync with storage without blocking render; handling parse errors avoids crashes when data is corrupted or from an older version.
+
 ## What to do
 
 1. **Save on change** — Use `useEffect` to write tasks to localStorage whenever the tasks array changes. Use a key (e.g. `'task-app-tasks'`). Serialize with `JSON.stringify(tasks)`.

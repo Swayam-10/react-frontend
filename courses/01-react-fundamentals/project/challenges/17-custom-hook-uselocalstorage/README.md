@@ -6,6 +6,8 @@
 
 Extract localStorage logic into a reusable **useLocalStorage** hook. Use it for both tasks and theme persistence. The hook should behave like `useState` but sync with localStorage.
 
+**In practice.** Custom hooks extract stateful logic so multiple components can reuse it without duplication. They compose built-in hooks (useState, useEffect) and keep components focused on UI. In production, hooks like useLocalStorage, useDebounce, or useFetch are shared across the app and simplify testing and reuse.
+
 ## What to do
 
 1. **useLocalStorage** — Create a custom hook (e.g. in `src/hooks/useLocalStorage.ts`). Signature: `useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((prev: T) => T)) => void]`. On mount, read from localStorage; parse JSON; if missing or invalid, use `initialValue`. When the setter is called, update state and write to localStorage with `JSON.stringify`. Handle parse errors (use try/catch); on error, return initialValue and don't crash.

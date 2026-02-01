@@ -34,7 +34,33 @@ function loadProgress() {
 }
 
 /**
+ * Load challenge metadata (skills) for a course. Returns Map<challengeId, { name, skills }>.
+ */
+function loadChallengeMetadata(courseId) {
+  const challengesDir = join(ROOT_DIR, 'courses', courseId, 'project', 'challenges');
+  const courseConfigPath = join(ROOT_DIR, 'courses', courseId, 'course-config.json');
+  const config = existsSync(courseConfigPath) ? JSON.parse(readFileSync(courseConfigPath, 'utf-8')) : {};
+  const list = config.challenges || [];
+  const meta = new Map();
+  for (const c of list) {
+    const id = typeof c === 'object' ? c.id : c;
+    const name = typeof c === 'object' ? (c.name || id) : id;
+    let skills = [];
+    const metaPath = join(challengesDir, id, 'metadata.json');
+    if (existsSync(metaPath)) {
+      try {
+        const m = JSON.parse(readFileSync(metaPath, 'utf-8'));
+        skills = Array.isArray(m.skills) ? m.skills : [];
+      } catch (_) {}
+    }
+    meta.set(id, { name, skills });
+  }
+  return meta;
+}
+
+/**
  * Update one course project README with evidence from course-summary.json and challenge-results.json.
+ * Table includes: Challenge name, Skills covered, Passed / Not passed (updated when review runs).
  */
 function updateCourseReadmeEvidence(courseId) {
   const courseDir = join(ROOT_DIR, 'courses', courseId);
@@ -49,7 +75,7 @@ function updateCourseReadmeEvidence(courseId) {
   let completedChallenges = 0;
   let averageScore = 0;
   let lastUpdated = new Date().toISOString();
-  const challengeRows = [];
+  const statusByChallenge = new Map(); // challengeId -> 'Pass' | 'Fail'
 
   if (existsSync(courseSummaryPath)) {
     const summary = JSON.parse(readFileSync(courseSummaryPath, 'utf-8'));
@@ -62,8 +88,28 @@ function updateCourseReadmeEvidence(courseId) {
   if (existsSync(challengeResultsPath)) {
     const results = JSON.parse(readFileSync(challengeResultsPath, 'utf-8'));
     for (const r of results) {
-      const status = r.passed ? 'Pass' : 'Fail';
-      challengeRows.push({ name: r.challengeName || r.challengeId, status });
+      const id = r.challengeId || r.challengeName;
+      statusByChallenge.set(id, r.passed ? 'Passed' : 'Not passed');
+    }
+  }
+
+  const metadata = loadChallengeMetadata(courseId);
+  const challengeRows = [];
+  for (const [id, { name, skills }] of metadata) {
+    const status = statusByChallenge.get(id) || '—';
+    const skillsStr = skills.length ? skills.join(', ') : '—';
+    challengeRows.push({ name, skills: skillsStr, status });
+  }
+  if (challengeRows.length === 0 && totalChallenges > 0) {
+    const courseConfigPath = join(courseDir, 'course-config.json');
+    if (existsSync(courseConfigPath)) {
+      const config = JSON.parse(readFileSync(courseConfigPath, 'utf-8'));
+      for (const c of config.challenges || []) {
+        const id = typeof c === 'object' ? c.id : c;
+        const name = typeof c === 'object' ? (c.name || id) : id;
+        const status = statusByChallenge.get(id) || '—';
+        challengeRows.push({ name, skills: '—', status });
+      }
     }
   }
 
@@ -83,9 +129,9 @@ function updateCourseReadmeEvidence(courseId) {
     `| Challenges completed | ${completedChallenges} / ${totalChallenges} (${completionPct}%) |`,
     `| Average score | ${scoreStr}% |`,
     '',
-    '| Challenge | Status |',
-    '|-----------|--------|',
-    ...challengeRows.map(r => `| ${r.name} | ${r.status} |`),
+    '| Challenge | Skills covered | Status |',
+    '|-----------|----------------|--------|',
+    ...challengeRows.map(r => `| ${r.name} | ${r.skills} | ${r.status} |`),
     '',
   ];
 

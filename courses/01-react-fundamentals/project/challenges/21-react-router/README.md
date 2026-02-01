@@ -8,6 +8,8 @@
 
 Add a **task detail page** at a URL with a dynamic segment (e.g. `/challenge/21-react-router/task/:id`). Use **Link** to navigate from the task list to a task, **useParams** to read the task id from the URL, and **useNavigate** (or Link) to go back. This challenge teaches routing and URL-driven UI.
 
+**In practice.** Client-side routing keeps the app in one page while the URL drives which view is shown; users can bookmark and share links. In production, React Router (or similar) handles routes, params, and navigation; Link and useNavigate avoid full reloads and keep state in the SPA.
+
 ## What to do
 
 1. **Routes** — In `App.tsx`, ensure there is a route for the task detail page: path `/challenge/21-react-router/task/:id` that renders `TaskDetailPage`. The route `/challenge/21-react-router` should show the task list (`TaskApp` with tasks and dispatch). Pass **`linkToTaskDetail`** from App for the list route so the list can render links to each task.

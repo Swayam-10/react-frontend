@@ -37,7 +37,10 @@ const HARDCODED_TASKS: Task[] = [
   },
 ]
 
-export default function TaskList({ tasks, countText }: TaskListProps) {
+export default function TaskList({
+  tasks,
+  countText,
+}: TaskListProps) {
   const list = tasks ?? HARDCODED_TASKS
 
   return (

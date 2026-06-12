@@ -1,6 +1,7 @@
 export { default as ChallengeList } from './ChallengeList'
 export { default as TaskCard } from './TaskCard'
 export { default as TaskList } from './TaskList'
+export type { Task } from './TaskList'
 export { default as TaskForm } from './TaskForm'
 export { default as TaskApp } from './TaskApp'
 export { default as FilterBar } from './FilterBar'

@@ -1,31 +1,63 @@
 import TaskCard from './TaskCard'
 
 export interface Task {
-  id: number
+  id: string | number
   title: string
   description: string
-  priority: 'Low' | 'Medium' | 'High'
+  priority: string
   completed: boolean
 }
 
-export default function TaskList() {
+interface TaskListProps {
+  tasks?: Task[]
+  countText?: string
+}
+
+const HARDCODED_TASKS: Task[] = [
+  {
+    id: 1,
+    title: 'Task One',
+    description: 'First hardcoded task',
+    priority: 'High',
+    completed: false,
+  },
+  {
+    id: 2,
+    title: 'Task Two',
+    description: 'Second hardcoded task',
+    priority: 'Medium',
+    completed: false,
+  },
+  {
+    id: 3,
+    title: 'Task Three',
+    description: 'Third hardcoded task',
+    priority: 'Low',
+    completed: false,
+  },
+]
+
+export default function TaskList({ tasks, countText }: TaskListProps) {
+  const list = tasks ?? HARDCODED_TASKS
+
   return (
-    <section id="task-list">
-      <TaskCard
-        title="Task One"
-        description="First hardcoded task"
-        priority="High"
-      />
-      <TaskCard
-        title="Task Two"
-        description="Second hardcoded task"
-        priority="Medium"
-      />
-      <TaskCard
-        title="Task Three"
-        description="Third hardcoded task"
-        priority="Low"
-      />
-    </section>
+    <>
+      {countText && (
+        <div id="task-count">
+          {countText}
+        </div>
+      )}
+
+      <section id="task-list">
+        {list.map((task) => (
+          <TaskCard
+            key={task.id}
+            title={task.title}
+            description={task.description}
+            priority={task.priority}
+          />
+        ))}
+      </section>
+    </>
   )
 }

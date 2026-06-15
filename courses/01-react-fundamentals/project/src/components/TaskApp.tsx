@@ -22,6 +22,7 @@ export default function TaskApp({
   setTasks,
   showForm,
   countFormat,
+  onDelete,
 }: TaskAppProps) {
   const handleAddTask = (task: Task) => {
     setTasks?.((prev) => [...prev, task])
@@ -37,6 +38,12 @@ export default function TaskApp({
             }
           : task
       )
+    )
+  }
+
+  const handleDelete = (id: string | number) => {
+    setTasks?.((prev) =>
+      prev.filter((task) => task.id !== id)
     )
   }
 
@@ -59,6 +66,7 @@ export default function TaskApp({
         tasks={tasks}
         countText={countText}
         onToggle={handleToggle}
+        onDelete={onDelete ?? handleDelete}
       />
     </>
   )

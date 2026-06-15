@@ -1,17 +1,31 @@
 interface TaskCardProps {
+  id?: string | number
   title: string
   description: string
   priority?: string
   completed?: boolean
   onToggle?: () => void
+  onDelete?: (id: string | number) => void
 }
 
 export default function TaskCard({
+  id,
   title,
   description,
   completed = false,
   onToggle,
+  onDelete,
 }: TaskCardProps) {
+  const handleDelete = () => {
+    if (
+      id !== undefined &&
+      onDelete &&
+      window.confirm('Are you sure?')
+    ) {
+      onDelete(id)
+    }
+  }
+
   return (
     <article
       id="task-card"
@@ -43,6 +57,12 @@ export default function TaskCard({
       >
         {description}
       </p>
+
+      {onDelete && (
+        <button onClick={handleDelete}>
+          Delete
+        </button>
+      )}
     </article>
   )
 }

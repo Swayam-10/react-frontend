@@ -3,16 +3,28 @@ type FilterType =
   | 'active'
   | 'completed'
 
+type SortType =
+  | 'recent'
+  | 'high-low'
+  | 'low-high'
+  | 'alphabetical'
+
 interface FilterBarProps {
   filter: FilterType
   onFilterChange: (
     filter: FilterType
+  ) => void
+  sortOrder: SortType
+  onSortChange: (
+    sort: SortType
   ) => void
 }
 
 export default function FilterBar({
   filter,
   onFilterChange,
+  sortOrder,
+  onSortChange,
 }: FilterBarProps) {
   return (
     <div id="filter-bar">
@@ -42,6 +54,32 @@ export default function FilterBar({
       >
         Completed
       </button>
+
+      <select
+        id="sort-order"
+        value={sortOrder}
+        onChange={(e) =>
+          onSortChange(
+            e.target.value as SortType
+          )
+        }
+      >
+        <option value="recent">
+          Recently Added
+        </option>
+
+        <option value="high-low">
+          Priority: High to Low
+        </option>
+
+        <option value="low-high">
+          Priority: Low to High
+        </option>
+
+        <option value="alphabetical">
+          Alphabetical
+        </option>
+      </select>
     </div>
   )
 }

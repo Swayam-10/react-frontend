@@ -11,11 +11,13 @@ type SortType =
 
 interface FilterBarProps {
   filter: FilterType
+
   onFilterChange: (
     filter: FilterType
   ) => void
 
   sortOrder: SortType
+
   onSortChange: (
     sort: SortType
   ) => void
@@ -24,6 +26,14 @@ interface FilterBarProps {
 
   onSearchChange: (
     value: string
+  ) => void
+
+  categories: string[]
+
+  selectedCategory: string
+
+  onCategoryChange: (
+    category: string
   ) => void
 }
 
@@ -34,6 +44,9 @@ export default function FilterBar({
   onSortChange,
   search,
   onSearchChange,
+  categories,
+  selectedCategory,
+  onCategoryChange,
 }: FilterBarProps) {
   return (
     <div id="filter-bar">
@@ -93,6 +106,31 @@ export default function FilterBar({
       >
         Completed
       </button>
+
+      <select
+        id="category-filter"
+        value={selectedCategory}
+        onChange={(e) =>
+          onCategoryChange(
+            e.target.value
+          )
+        }
+      >
+        <option value="All categories">
+          All categories
+        </option>
+
+        {categories.map(
+          (category) => (
+            <option
+              key={category}
+              value={category}
+            >
+              {category}
+            </option>
+          )
+        )}
+      </select>
 
       <select
         id="sort-order"

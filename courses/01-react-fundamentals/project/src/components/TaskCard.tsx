@@ -10,6 +10,9 @@ interface TaskCardProps {
   priority?: string
   completed?: boolean
 
+  category?: string
+  tags?: string[]
+
   onToggle?: () => void
   onDelete?: (id: string | number) => void
 
@@ -35,6 +38,8 @@ export default function TaskCard({
   description,
   priority = 'Medium',
   completed = false,
+  category = 'General',
+  tags = [],
   onToggle,
   onDelete,
   onUpdateTask,
@@ -213,19 +218,53 @@ export default function TaskCard({
         {description}
       </p>
 
-      <p>{priority}</p>
+      <p>
+        Priority: {priority}
+      </p>
+
+      <div id="task-category">
+        {category}
+      </div>
+
+      <div id="task-tags">
+        {tags.map((tag) => (
+          <span
+            key={tag}
+            data-tag={tag}
+            style={{
+              display:
+                'inline-block',
+              marginRight: '6px',
+              padding:
+                '2px 8px',
+              border:
+                '1px solid #ccc',
+              borderRadius:
+                '999px',
+            }}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
 
       <button
         type="button"
         onClick={() =>
-          setEditingId?.(id ?? null)
+          setEditingId?.(
+            id ?? null
+          )
         }
       >
         Edit
       </button>
 
       {onDelete && (
-        <button onClick={handleDelete}>
+        <button
+          onClick={
+            handleDelete
+          }
+        >
           Delete
         </button>
       )}

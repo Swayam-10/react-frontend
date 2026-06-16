@@ -60,6 +60,23 @@ export default function TaskApp({
   const [editingId, setEditingId] =
     useState<string | number | null>(null)
 
+ 
+const [
+  selectedCategory,
+  setSelectedCategory,
+] = useState(
+  'All categories'
+)
+
+const categories = [
+  ...new Set(
+    tasks.map(
+      (task) =>
+        task.category ??
+        'General'
+    )
+  ),
+]
   useEffect(() => {
     if (searchInput === search) {
       setIsSearching(false)
@@ -156,6 +173,18 @@ export default function TaskApp({
       )
   }
 
+  if (
+  selectedCategory !==
+  'All categories'
+) {
+  filteredTasks =
+    filteredTasks.filter(
+      (task) =>
+        task.category ===
+        selectedCategory
+    )
+}
+
   if (search.trim()) {
     const searchLower =
       search.toLowerCase()
@@ -251,23 +280,26 @@ export default function TaskApp({
       {showFilterBar && (
         <>
           <FilterBar
-            filter={filter}
-            onFilterChange={
-              setFilter
-            }
-            sortOrder={
-              sortOrder
-            }
-            onSortChange={
-              setSortOrder
-            }
-            search={
-              searchInput
-            }
-            onSearchChange={
-              setSearchInput
-            }
-          />
+  filter={filter}
+  onFilterChange={
+    setFilter
+  }
+  sortOrder={sortOrder}
+  onSortChange={
+    setSortOrder
+  }
+  search={searchInput}
+  onSearchChange={
+    setSearchInput
+  }
+  categories={categories}
+  selectedCategory={
+    selectedCategory
+  }
+  onCategoryChange={
+    setSelectedCategory
+  }
+/>
 
           {isSearching && (
             <div id="searching-indicator">

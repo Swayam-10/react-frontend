@@ -45,6 +45,9 @@ export default function TaskApp({
   const [sortOrder, setSortOrder] =
     useState<SortType>('recent')
 
+  const [search, setSearch] =
+    useState('')
+
   const [editingId, setEditingId] =
     useState<string | number | null>(null)
 
@@ -99,15 +102,31 @@ export default function TaskApp({
   let filteredTasks = tasks
 
   if (filter === 'active') {
-    filteredTasks = tasks.filter(
+    filteredTasks = filteredTasks.filter(
       (task) => !task.completed
     )
   }
 
   if (filter === 'completed') {
-    filteredTasks = tasks.filter(
+    filteredTasks = filteredTasks.filter(
       (task) => task.completed
     )
+  }
+
+  if (search.trim()) {
+    const searchLower =
+      search.toLowerCase()
+
+    filteredTasks =
+      filteredTasks.filter(
+        (task) =>
+          task.title
+            .toLowerCase()
+            .includes(searchLower) ||
+          task.description
+            .toLowerCase()
+            .includes(searchLower)
+      )
   }
 
   const priorityRank = {
@@ -176,13 +195,15 @@ export default function TaskApp({
           onFilterChange={setFilter}
           sortOrder={sortOrder}
           onSortChange={setSortOrder}
+          search={search}
+          onSearchChange={setSearch}
         />
       )}
 
       {showFilterBar &&
         sortedTasks.length === 0 && (
           <div id="filter-empty-message">
-            No tasks match this filter
+            No tasks found
           </div>
         )}
 

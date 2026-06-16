@@ -228,5 +228,28 @@
       "maintainability": 90,
       "overall": "The code is well-structured, readable, and effective in its use of `useEffect` for handling side effects. With a few minor improvements, it can become even more maintainable and efficient."
     }
+  },
+  {
+    "challengeId": "11-useeffect-debounced-search",
+    "challengeName": "useEffect - Debounced Search",
+    "aiReview": {
+      "challengeId": "11-useeffect-debounced-search",
+      "timestamp": "2026-06-16T10:50:29.313Z",
+      "score": 88,
+      "feedback": [],
+      "strengths": [
+        "The code is well-structured, and the use of functional components and hooks makes it easy to understand.",
+        "The author has used TypeScript, which is a good practice for large-scale applications.",
+        "The code is well-organized, and the use of interfaces and types makes it easy to understand the structure of the data."
+      ],
+      "improvements": [
+        "The `useEffect` hook in the `TaskApp` component is not properly cleaned up when the component is unmounted. This can cause memory leaks and other issues.",
+        "The `searchInput` and `search` states are not properly synchronized. This can cause the search functionality to behave unexpectedly.",
+        "The code can be improved by using a more robust debouncing mechanism, such as `lodash.debounce` or `react-use`."
+      ],
+      "readability": 85,
+      "maintainability": 90,
+      "overall": "The code is well-structured, and the use of functional components and hooks makes it easy to understand. However, there are some areas for improvement, such as the cleanup of the `useEffect` hook and the synchronization of the `searchInput` and `search` states."
+    }
   }
 ]

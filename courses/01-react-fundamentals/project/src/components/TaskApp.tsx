@@ -1,4 +1,7 @@
-import React, { useState } from 'react'
+import React, {
+  useEffect,
+  useState,
+} from 'react'
 import TaskForm from './TaskForm'
 import TaskList, { Task } from './TaskList'
 import FilterBar from './FilterBar'
@@ -45,14 +48,46 @@ export default function TaskApp({
   const [sortOrder, setSortOrder] =
     useState<SortType>('recent')
 
+  const [searchInput, setSearchInput] =
+    useState('')
+
   const [search, setSearch] =
     useState('')
+
+  const [isSearching, setIsSearching] =
+    useState(false)
 
   const [editingId, setEditingId] =
     useState<string | number | null>(null)
 
-  const handleAddTask = (task: Task) => {
-    setTasks?.((prev) => [...prev, task])
+  useEffect(() => {
+    if (searchInput === search) {
+      setIsSearching(false)
+      return
+    }
+
+    setIsSearching(true)
+
+    const timeoutId = window.setTimeout(
+      () => {
+        setSearch(searchInput)
+        setIsSearching(false)
+      },
+      300
+    )
+
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [searchInput, search])
+
+  const handleAddTask = (
+    task: Task
+  ) => {
+    setTasks?.((prev) => [
+      ...prev,
+      task,
+    ])
   }
 
   const handleToggle = (
@@ -63,7 +98,8 @@ export default function TaskApp({
         task.id === id
           ? {
               ...task,
-              completed: !task.completed,
+              completed:
+                !task.completed,
             }
           : task
       )
@@ -91,7 +127,10 @@ export default function TaskApp({
     setTasks?.((prev) =>
       prev.map((task) =>
         task.id === id
-          ? { ...task, ...updates }
+          ? {
+              ...task,
+              ...updates,
+            }
           : task
       )
     )
@@ -102,15 +141,19 @@ export default function TaskApp({
   let filteredTasks = tasks
 
   if (filter === 'active') {
-    filteredTasks = filteredTasks.filter(
-      (task) => !task.completed
-    )
+    filteredTasks =
+      filteredTasks.filter(
+        (task) =>
+          !task.completed
+      )
   }
 
   if (filter === 'completed') {
-    filteredTasks = filteredTasks.filter(
-      (task) => task.completed
-    )
+    filteredTasks =
+      filteredTasks.filter(
+        (task) =>
+          task.completed
+      )
   }
 
   if (search.trim()) {
@@ -122,10 +165,14 @@ export default function TaskApp({
         (task) =>
           task.title
             .toLowerCase()
-            .includes(searchLower) ||
+            .includes(
+              searchLower
+            ) ||
           task.description
             .toLowerCase()
-            .includes(searchLower)
+            .includes(
+              searchLower
+            )
       )
   }
 
@@ -135,7 +182,9 @@ export default function TaskApp({
     Low: 1,
   }
 
-  const sortedTasks = [...filteredTasks]
+  const sortedTasks = [
+    ...filteredTasks,
+  ]
 
   if (sortOrder === 'high-low') {
     sortedTasks.sort(
@@ -161,7 +210,10 @@ export default function TaskApp({
     )
   }
 
-  if (sortOrder === 'alphabetical') {
+  if (
+    sortOrder ===
+    'alphabetical'
+  ) {
     sortedTasks.sort((a, b) =>
       a.title
         .toLowerCase()
@@ -171,37 +223,63 @@ export default function TaskApp({
     )
   }
 
-  const countText = showFilterBar
-    ? `Showing ${sortedTasks.length} of ${tasks.length} tasks`
-    : countFormat === 'completed'
-      ? `${
-          tasks.filter(
-            (task) => task.completed
-          ).length
-        } of ${tasks.length} completed`
-      : `${tasks.length} Tasks`
+  const countText =
+    showFilterBar
+      ? `Showing ${sortedTasks.length} of ${tasks.length} tasks`
+      : countFormat ===
+          'completed'
+        ? `${
+            tasks.filter(
+              (task) =>
+                task.completed
+            ).length
+          } of ${
+            tasks.length
+          } completed`
+        : `${tasks.length} Tasks`
 
   return (
     <>
       {showForm && (
         <TaskForm
-          onAddTask={handleAddTask}
+          onAddTask={
+            handleAddTask
+          }
         />
       )}
 
       {showFilterBar && (
-        <FilterBar
-          filter={filter}
-          onFilterChange={setFilter}
-          sortOrder={sortOrder}
-          onSortChange={setSortOrder}
-          search={search}
-          onSearchChange={setSearch}
-        />
+        <>
+          <FilterBar
+            filter={filter}
+            onFilterChange={
+              setFilter
+            }
+            sortOrder={
+              sortOrder
+            }
+            onSortChange={
+              setSortOrder
+            }
+            search={
+              searchInput
+            }
+            onSearchChange={
+              setSearchInput
+            }
+          />
+
+          {isSearching && (
+            <div id="searching-indicator">
+              Searching...
+            </div>
+          )}
+        </>
       )}
 
       {showFilterBar &&
-        sortedTasks.length === 0 && (
+        sortedTasks.length ===
+          0 && (
           <div id="filter-empty-message">
             No tasks found
           </div>
@@ -210,13 +288,22 @@ export default function TaskApp({
       <TaskList
         tasks={sortedTasks}
         countText={countText}
-        onToggle={handleToggle}
-        onDelete={
-          onDelete ?? handleDelete
+        onToggle={
+          handleToggle
         }
-        onUpdateTask={handleUpdateTask}
-        editingId={editingId}
-        setEditingId={setEditingId}
+        onDelete={
+          onDelete ??
+          handleDelete
+        }
+        onUpdateTask={
+          handleUpdateTask
+        }
+        editingId={
+          editingId
+        }
+        setEditingId={
+          setEditingId
+        }
       />
     </>
   )

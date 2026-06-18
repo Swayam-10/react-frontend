@@ -274,5 +274,28 @@
       "maintainability": 90,
       "overall": "The code is well-organized, maintainable, and efficient. However, there are some areas for improvement to make it even better. With some refactoring and optimization, this code could be a great example of best practices in React and TypeScript development."
     }
+  },
+  {
+    "challengeId": "13-due-dates-and-sorting",
+    "challengeName": "Due Dates and Sorting",
+    "aiReview": {
+      "challengeId": "13-due-dates-and-sorting",
+      "timestamp": "2026-06-18T17:37:20.147Z",
+      "score": 83,
+      "feedback": [],
+      "strengths": [
+        "The code is well-structured and follows a consistent naming convention.",
+        "The use of TypeScript and functional components makes the code more maintainable and scalable.",
+        "The code includes clear and concise comments, which helps with understanding the functionality."
+      ],
+      "improvements": [
+        "Some of the functions, such as `handleToggle` and `handleDelete`, are quite long and complex. Consider breaking them down into smaller, more manageable functions.",
+        "The `sortedTasks` array is recreated on every render, which can lead to performance issues. Consider using a more efficient sorting algorithm or memoizing the sorted array.",
+        "The `dueDate` property is not consistently formatted throughout the code. Consider using a single format (e.g., ISO date string) and converting it to the desired format when displaying it."
+      ],
+      "readability": 85,
+      "maintainability": 80,
+      "overall": "The code is well-structured and maintainable, but there are some areas for improvement, particularly in terms of function complexity and performance. With some refactoring and optimization, the code can be even more efficient and scalable."
+    }
   }
 ]

@@ -16,6 +16,7 @@ type SortType =
   | 'high-low'
   | 'low-high'
   | 'alphabetical'
+  | 'due-date'
 
 interface TaskAppProps {
   tasks: Task[]
@@ -251,6 +252,39 @@ const categories = [
         )
     )
   }
+
+  if (
+  sortOrder ===
+  'due-date'
+) {
+  sortedTasks.sort(
+    (a, b) => {
+      if (
+        !a.dueDate &&
+        !b.dueDate
+      ) {
+        return 0
+      }
+
+      if (!a.dueDate) {
+        return 1
+      }
+
+      if (!b.dueDate) {
+        return -1
+      }
+
+      return (
+        new Date(
+          a.dueDate
+        ).getTime() -
+        new Date(
+          b.dueDate
+        ).getTime()
+      )
+    }
+  )
+}
 
   const countText =
     showFilterBar

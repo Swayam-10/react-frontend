@@ -21,6 +21,7 @@ const INITIAL_TASKS: Task[] = [
     completed: false,
     category: 'Work',
     tags: ['important'],
+    dueDate: '2026-06-25'
   },
   {
     id: 2,
@@ -30,6 +31,7 @@ const INITIAL_TASKS: Task[] = [
     completed: false,
     category: 'Personal',
     tags: ['home'],
+    dueDate: '2026-06-25'
   },
   {
     id: 3,
@@ -39,6 +41,7 @@ const INITIAL_TASKS: Task[] = [
     completed: false,
     category: 'General',
     tags: ['misc'],
+    dueDate: '2026-06-25'
   },
   {
     id: 4,
@@ -48,6 +51,7 @@ const INITIAL_TASKS: Task[] = [
     completed: false,
     category: 'Work',
     tags: ['office'],
+    dueDate: '2026-06-25'
   },
   {
     id: 5,
@@ -57,6 +61,7 @@ const INITIAL_TASKS: Task[] = [
     completed: false,
     category: 'Personal',
     tags: ['family'],
+    dueDate: '2026-06-25'
   },
 ]
 
@@ -90,6 +95,9 @@ useEffect(() => {
         'General',
       tags:
         task.tags ?? [],
+      dueDate:
+        task.dueDate ??
+        undefined,
     }))
   )
 }

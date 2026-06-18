@@ -12,7 +12,7 @@ interface TaskCardProps {
 
   category?: string
   tags?: string[]
-
+  dueDate?: string
   onToggle?: () => void
   onDelete?: (id: string | number) => void
 
@@ -40,6 +40,7 @@ export default function TaskCard({
   completed = false,
   category = 'General',
   tags = [],
+  dueDate,
   onToggle,
   onDelete,
   onUpdateTask,
@@ -120,6 +121,52 @@ export default function TaskCard({
     setEditingId?.(null)
   }
 
+  const today =
+  new Date()
+
+today.setHours(
+  0,
+  0,
+  0,
+  0
+)
+
+const due =
+  dueDate
+    ? new Date(dueDate)
+    : null
+
+if (due) {
+  due.setHours(
+    0,
+    0,
+    0,
+    0
+  )
+}
+
+const isOverdue =
+  !!due &&
+  due < today &&
+  !completed
+
+const isDueToday =
+  !!due &&
+  due.getTime() ===
+    today.getTime()
+
+const isDueSoon =
+  !!due &&
+  !isOverdue &&
+  !isDueToday &&
+  due.getTime() -
+    today.getTime() <=
+    3 *
+      24 *
+      60 *
+      60 *
+      1000
+
   if (isEditing) {
     return (
       <article id="task-card">
@@ -184,8 +231,11 @@ export default function TaskCard({
     <article
       id="task-card"
       data-completed={completed}
+      data-overdue={isOverdue}
       style={{
-        backgroundColor: completed
+        backgroundColor: isOverdue
+          ? '#fee2e2'
+          : completed
           ? '#f3f4f6'
           : '',
       }}

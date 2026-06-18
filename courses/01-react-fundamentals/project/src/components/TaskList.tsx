@@ -8,6 +8,7 @@ export interface Task {
   completed: boolean
   category: string
   tags: string[]
+  dueDate?: string
 }
 
 interface TaskListProps {
@@ -47,6 +48,7 @@ const HARDCODED_TASKS: Task[] = [
     completed: false,
     category: 'Work',
     tags: ['important'],
+    dueDate: '2026-06-25'
   },
   {
     id: 2,
@@ -57,6 +59,7 @@ const HARDCODED_TASKS: Task[] = [
     completed: false,
     category: 'Personal',
     tags: ['home'],
+    dueDate: '2026-06-25'
   },
   {
     id: 3,
@@ -67,6 +70,7 @@ const HARDCODED_TASKS: Task[] = [
     completed: false,
     category: 'General',
     tags: ['misc'],
+    dueDate: '2026-06-25'
   },
 ]
 
@@ -107,6 +111,9 @@ export default function TaskList({
               task.category
             }
             tags={task.tags}
+            dueDate={
+              task.dueDate
+            }
             onToggle={() =>
               onToggle?.(task.id)
             }

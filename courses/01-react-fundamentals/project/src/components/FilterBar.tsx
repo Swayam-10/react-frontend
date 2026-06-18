@@ -8,6 +8,7 @@ type SortType =
   | 'high-low'
   | 'low-high'
   | 'alphabetical'
+  | 'due-date'
 
 interface FilterBarProps {
   filter: FilterType
@@ -156,6 +157,10 @@ export default function FilterBar({
 
         <option value="alphabetical">
           Alphabetical
+        </option>
+
+        <option value="due-date">
+          Due Date (Soonest First)
         </option>
       </select>
     </div>

@@ -28,6 +28,9 @@ export default function TaskForm({
   const [error, setError] =
     useState('')
 
+  const [dueDate, setDueDate] =
+  useState('')
+
   const handleSubmit = (
     e: React.FormEvent
   ) => {
@@ -46,20 +49,23 @@ export default function TaskForm({
     setError('')
 
     onAddTask({
-      id: Date.now(),
-      title,
-      description,
-      priority,
-      completed: false,
-      category,
-      tags,
-    })
+  id: Date.now(),
+  title,
+  description,
+  priority,
+  completed: false,
+  category,
+  tags,
+  dueDate:
+    dueDate || undefined,
+})
 
     setTitle('')
     setDescription('')
     setPriority('Medium')
     setCategory('General')
     setTagsInput('')
+    setDueDate('')
   }
 
   return (
@@ -174,7 +180,20 @@ export default function TaskForm({
           }
         />
       </div>
+      <div>
+  <label htmlFor="task-due-date-input">
+    Due Date
+  </label>
 
+  <input
+    id="task-due-date-input"
+    type="date"
+    value={dueDate}
+    onChange={(e) =>
+      setDueDate(e.target.value)
+    }
+  />
+</div>
       <button type="submit">
         Add Task
       </button>

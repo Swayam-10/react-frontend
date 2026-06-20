@@ -1,5 +1,4 @@
-import { createContext, useContext, type ReactNode } from 'react'
-
+import {createContext,useContext,useState,useEffect,type ReactNode,} from 'react'
 export type Theme = 'light' | 'dark'
 
 export interface ThemeContextValue {
@@ -10,13 +9,54 @@ export interface ThemeContextValue {
 
 export const ThemeContext = createContext<ThemeContextValue | null>(null)
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const value: ThemeContextValue = {
-    theme: 'light',
-    setTheme: () => {},
-    toggleTheme: () => {},
+export function ThemeProvider({
+  children,
+}: {
+  children: ReactNode
+}) {
+  const [theme, setTheme] =
+    useState<Theme>('light')
+
+  useEffect(() => {
+    const saved =
+      localStorage.getItem(
+        'task-app-theme'
+      )
+
+    if (
+      saved === 'light' ||
+      saved === 'dark'
+    ) {
+      setTheme(saved)
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem(
+      'task-app-theme',
+      theme
+    )
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme((prev) =>
+      prev === 'light'
+        ? 'dark'
+        : 'light'
+    )
   }
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+
+  return (
+    <ThemeContext.Provider
+      value={{
+        theme,
+        setTheme,
+        toggleTheme,
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  )
 }
 
 export function useTheme(): ThemeContextValue {

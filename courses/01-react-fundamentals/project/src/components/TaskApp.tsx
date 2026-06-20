@@ -1,12 +1,10 @@
-import React, {
-  useEffect,
-  useState,
-} from 'react'
+import React, {useEffect,useState,} from 'react'
 import TaskForm from './TaskForm'
 import TaskList, { Task } from './TaskList'
 import FilterBar from './FilterBar'
 import StatsPanel from './StatsPanel'
 import { useMemo } from 'react'
+import { useTheme } from '../contexts/ThemeContext'
 type FilterType =
   | 'all'
   | 'active'
@@ -62,7 +60,10 @@ export default function TaskApp({
 
   const [editingId, setEditingId] =
     useState<string | number | null>(null)
-
+  const {
+    theme,
+    toggleTheme,
+  } = useTheme()
  
 const [
   selectedCategory,
@@ -341,7 +342,29 @@ const stats = useMemo(() => {
         : `${tasks.length} Tasks`
 
   return (
-    <>
+  <div
+    data-theme={theme}
+    style={{
+      backgroundColor:
+        theme === 'dark'
+          ? '#1f2937'
+          : '#ffffff',
+      color:
+        theme === 'dark'
+          ? '#ffffff'
+          : '#000000',
+      minHeight: '100vh',
+    }}
+  >
+    <button
+      id="theme-toggle"
+      type="button"
+      onClick={toggleTheme}
+    >
+      {theme === 'light'
+        ? 'Dark Mode'
+        : 'Light Mode'}
+    </button>
       {showForm && (
         <TaskForm
           onAddTask={
@@ -419,6 +442,6 @@ const stats = useMemo(() => {
           setEditingId
         }
       />
-    </>
+    </div>
   )
 }

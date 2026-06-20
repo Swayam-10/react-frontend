@@ -5,7 +5,8 @@ import React, {
 import TaskForm from './TaskForm'
 import TaskList, { Task } from './TaskList'
 import FilterBar from './FilterBar'
-
+import StatsPanel from './StatsPanel'
+import { useMemo } from 'react'
 type FilterType =
   | 'all'
   | 'active'
@@ -42,6 +43,7 @@ export default function TaskApp({
   countFormat,
   onDelete,
   showFilterBar,
+  showStatsPanel,
 }: TaskAppProps) {
   const [filter, setFilter] =
     useState<FilterType>('all')
@@ -78,6 +80,43 @@ const categories = [
     )
   ),
 ]
+const stats = useMemo(() => {
+  const total = tasks.length
+
+  const completed =
+    tasks.filter(
+      (task) =>
+        task.completed
+    ).length
+
+  const active =
+    total - completed
+
+  const overdue =
+    tasks.filter(
+      (task) => {
+        if (
+          !task.dueDate ||
+          task.completed
+        ) {
+          return false
+        }
+
+        return (
+          new Date(
+            task.dueDate
+          ) < new Date()
+        )
+      }
+    ).length
+
+  return {
+    total,
+    completed,
+    active,
+    overdue,
+  }
+}, [tasks])
   useEffect(() => {
     if (searchInput === search) {
       setIsSearching(false)
@@ -350,7 +389,16 @@ const categories = [
             No tasks found
           </div>
         )}
-
+      {showStatsPanel && (
+        <StatsPanel
+          total={stats.total}
+          completed={
+            stats.completed
+          }
+          active={stats.active}
+          overdue={stats.overdue}
+      />
+      )}
       <TaskList
         tasks={sortedTasks}
         countText={countText}

@@ -1,8 +1,5 @@
 import './App.css'
-import {
-  useEffect,
-  useState,
-} from 'react'
+import useLocalStorage from './hooks/useLocalStorage'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ChallengeList from './components/ChallengeList'
 import TaskList from './components/TaskList'
@@ -65,53 +62,14 @@ const INITIAL_TASKS: Task[] = [
   },
 ]
 
-const STORAGE_KEY =
-  'task-app-tasks'
+
 
 function AppContent() {
   const [tasks, setTasks] =
-  useState<Task[]>(INITIAL_TASKS)
-
-useEffect(() => {
-  try {
-    const stored =
-      localStorage.getItem(
-        STORAGE_KEY
-      )
-
-    if (!stored) {
-      return
-    }
-
-    const parsed =
-      JSON.parse(stored)
-
-    if (Array.isArray(parsed)) {
-  setTasks(
-    parsed.map((task) => ({
-      ...task,
-      category:
-        task.category ??
-        'General',
-      tags:
-        task.tags ?? [],
-      dueDate:
-        task.dueDate ??
-        undefined,
-    }))
+  useLocalStorage<Task[]>(
+    'task-app-tasks',
+    INITIAL_TASKS
   )
-}
-  } catch {
-    // use default tasks
-  }
-}, [])
-
-useEffect(() => {
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(tasks)
-  )
-}, [tasks])
 
   const handleDelete = (id: string | number) => {
     if (window.confirm('Are you sure?')) {

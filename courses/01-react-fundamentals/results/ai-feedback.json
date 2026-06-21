@@ -389,5 +389,28 @@
       "maintainability": 90,
       "overall": "The code is well-structured and maintainable, with a clear and concise implementation of the `useLocalStorage` hook. However, there are some areas for improvement, such as additional error handling and simplification of the `setStoredValue` function. Overall, the code is a good example of how to implement a reusable and scalable hook in React."
     }
+  },
+  {
+    "challengeId": "18-usereducer-complex-state",
+    "challengeName": "useReducer - Complex State Management",
+    "aiReview": {
+      "challengeId": "18-usereducer-complex-state",
+      "timestamp": "2026-06-21T11:52:51.137Z",
+      "score": 88,
+      "feedback": [],
+      "strengths": [
+        "Effective use of TypeScript type annotations for clarity and safety",
+        "Clear separation of concerns between components and reducers",
+        "Use of memoization for performance optimization"
+      ],
+      "improvements": [
+        "Consider adding more descriptive variable names to improve code readability",
+        "Some reducer actions could be simplified using more concise syntax",
+        "Consider adding more tests to ensure the reducer's correctness and edge cases"
+      ],
+      "readability": 85,
+      "maintainability": 90,
+      "overall": "The code is well-structured, maintainable, and demonstrates good practices. However, there are some minor areas for improvement to enhance readability and test coverage."
+    }
   }
 ]

@@ -1,4 +1,5 @@
 import React, {useEffect,useState,} from 'react'
+import {ADD_TASK,UPDATE_TASK,DELETE_TASK,TOGGLE_TASK,} from '../reducers/taskReducer'
 import TaskForm from './TaskForm'
 import TaskList, { Task } from './TaskList'
 import FilterBar from './FilterBar'
@@ -19,9 +20,7 @@ type SortType =
 
 interface TaskAppProps {
   tasks: Task[]
-  setTasks?: React.Dispatch<
-    React.SetStateAction<Task[]>
-  >
+  dispatch?: React.Dispatch<any>
 
   showForm?: boolean
   countFormat?: string
@@ -36,7 +35,7 @@ interface TaskAppProps {
 
 export default function TaskApp({
   tasks,
-  setTasks,
+  dispatch,
   showForm,
   countFormat,
   onDelete,
@@ -142,37 +141,29 @@ const stats = useMemo(() => {
   const handleAddTask = (
     task: Task
   ) => {
-    setTasks?.((prev) => [
-      ...prev,
-      task,
-    ])
+    dispatch?.({
+      type: ADD_TASK,
+      payload: task,
+    })
   }
 
   const handleToggle = (
-    id: string | number
-  ) => {
-    setTasks?.((prev) =>
-      prev.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              completed:
-                !task.completed,
-            }
-          : task
-      )
-    )
-  }
+  id: string | number
+) => {
+  dispatch?.({
+    type: TOGGLE_TASK,
+    payload: id,
+  })
+}
 
   const handleDelete = (
-    id: string | number
-  ) => {
-    setTasks?.((prev) =>
-      prev.filter(
-        (task) => task.id !== id
-      )
-    )
-  }
+  id: string | number
+) => {
+  dispatch?.({
+    type: DELETE_TASK,
+    payload: id,
+  })
+}
 
   const handleUpdateTask = (
     id: string | number,
@@ -182,16 +173,15 @@ const stats = useMemo(() => {
       priority: string
     }
   ) => {
-    setTasks?.((prev) =>
-      prev.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              ...updates,
-            }
-          : task
-      )
-    )
+    dispatch?.({
+  type: UPDATE_TASK,
+  payload: {
+    id,
+    ...updates,
+  },
+})
+
+setEditingId(null)
 
     setEditingId(null)
   }

@@ -1,4 +1,4 @@
-import React, {useEffect,useState,} from 'react'
+import React, {useEffect,useState,useCallback} from 'react'
 import {ADD_TASK,UPDATE_TASK,DELETE_TASK,TOGGLE_TASK,} from '../reducers/taskReducer'
 import TaskForm from './TaskForm'
 import TaskList, { Task } from './TaskList'
@@ -6,6 +6,7 @@ import FilterBar from './FilterBar'
 import StatsPanel from './StatsPanel'
 import { useMemo } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import ErrorBoundary from './ErrorBoundary'
 type FilterType =
   | 'all'
   | 'active'
@@ -20,7 +21,10 @@ type SortType =
 
 interface TaskAppProps {
   tasks: Task[]
-  dispatch?: React.Dispatch<any>
+  dispatch?: React.Dispatch<{
+  type: string
+  payload?: unknown
+}>
 
   showForm?: boolean
   countFormat?: string
@@ -138,55 +142,61 @@ const stats = useMemo(() => {
     }
   }, [searchInput, search])
 
-  const handleAddTask = (
-    task: Task
-  ) => {
-    dispatch?.({
-      type: ADD_TASK,
-      payload: task,
-    })
-  }
+  const handleAddTask =
+  useCallback(
+    (task: Task) => {
+      dispatch?.({
+        type: ADD_TASK,
+        payload: task,
+      })
+    },
+    [dispatch]
+  )
+  const handleToggle =
+  useCallback(
+    (id: string | number) => {
+      dispatch?.({
+        type: TOGGLE_TASK,
+        payload: id,
+      })
+    },
+    [dispatch]
+  )
 
-  const handleToggle = (
-  id: string | number
-) => {
-  dispatch?.({
-    type: TOGGLE_TASK,
-    payload: id,
-  })
-}
+  const handleDelete =
+  useCallback(
+    (id: string | number) => {
+      dispatch?.({
+        type: DELETE_TASK,
+        payload: id,
+      })
+    },
+    [dispatch]
+  )
+  const handleUpdateTask =
+  useCallback(
+    (
+      id: string | number,
+      updates: {
+        title: string
+        description: string
+        priority: string
+      }
+    ) => {
+      dispatch?.({
+        type: UPDATE_TASK,
+        payload: {
+          id,
+          ...updates,
+        },
+      })
 
-  const handleDelete = (
-  id: string | number
-) => {
-  dispatch?.({
-    type: DELETE_TASK,
-    payload: id,
-  })
-}
-
-  const handleUpdateTask = (
-    id: string | number,
-    updates: {
-      title: string
-      description: string
-      priority: string
-    }
-  ) => {
-    dispatch?.({
-  type: UPDATE_TASK,
-  payload: {
-    id,
-    ...updates,
-  },
-})
-
-setEditingId(null)
-
-    setEditingId(null)
-  }
-
-  let filteredTasks = tasks
+      setEditingId(null)
+    },
+    [dispatch]
+  )
+ const sortedTasks = useMemo(() => {
+  let filteredTasks = [...tasks]
 
   if (filter === 'active') {
     filteredTasks =
@@ -316,6 +326,14 @@ setEditingId(null)
   )
 }
 
+return filteredTasks
+}, [
+  tasks,
+  filter,
+  selectedCategory,
+  search,
+  sortOrder,
+])
   const countText =
     showFilterBar
       ? `Showing ${sortedTasks.length} of ${tasks.length} tasks`
@@ -412,26 +430,28 @@ setEditingId(null)
           overdue={stats.overdue}
       />
       )}
-      <TaskList
-        tasks={sortedTasks}
-        countText={countText}
-        onToggle={
-          handleToggle
-        }
-        onDelete={
-          onDelete ??
-          handleDelete
-        }
-        onUpdateTask={
-          handleUpdateTask
-        }
-        editingId={
-          editingId
-        }
-        setEditingId={
-          setEditingId
-        }
-      />
+      <ErrorBoundary>
+  <TaskList
+    tasks={sortedTasks}
+    countText={countText}
+    onToggle={
+      handleToggle
+    }
+    onDelete={
+      onDelete ??
+      handleDelete
+    }
+    onUpdateTask={
+      handleUpdateTask
+    }
+    editingId={
+      editingId
+    }
+    setEditingId={
+      setEditingId
+    }
+  />
+</ErrorBoundary>
     </div>
   )
 }

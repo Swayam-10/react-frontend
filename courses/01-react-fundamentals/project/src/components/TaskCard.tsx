@@ -1,7 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from 'react'
+import React, {useEffect,useState,} from 'react'
 
 interface TaskCardProps {
   id?: string | number
@@ -32,7 +29,7 @@ interface TaskCardProps {
   ) => void
 }
 
-export default function TaskCard({
+function TaskCard({
   id,
   title,
   description,
@@ -161,8 +158,7 @@ const isDueSoon =
   !isDueToday &&
   due.getTime() -
     today.getTime() <=
-    3 *
-      24 *
+    3 *24 *
       60 *
       60 *
       1000
@@ -297,7 +293,17 @@ const isDueSoon =
           </span>
         ))}
       </div>
+      {isOverdue && (
+        <p>Overdue</p>
+      )}
 
+      {isDueToday && (
+        <p>Due Today</p>
+      )}
+
+      {isDueSoon && (
+        <p>Due Soon</p>
+      )}
       <button
         type="button"
         onClick={() =>
@@ -321,3 +327,4 @@ const isDueSoon =
     </article>
   )
 }
+export default React.memo(TaskCard)

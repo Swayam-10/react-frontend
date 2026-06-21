@@ -68,12 +68,12 @@ npm run review -- --challenge=01-static-task-display
 
 ## 📊 Progress Evidence
 
-*Auto-updated when you run review. Last run: 21/6/2026, 5:22:52 pm*
+*Auto-updated when you run review. Last run: 22/6/2026, 1:59:00 am*
 
 | Metric | Value |
 |--------|-------|
-| Challenges completed | 18 / 23 (78.3%) |
-| Average score | 82.9% |
+| Challenges completed | 19 / 23 (82.6%) |
+| Average score | 82.3% |
 
 | Challenge | Skills covered | Status |
 |-----------|----------------|--------|
@@ -95,8 +95,8 @@ npm run review -- --challenge=01-static-task-display
 | Context API - Theme Management | React Context, createContext, Provider, useContext, Global state, Custom hook | Passed |
 | Custom Hook - useLocalStorage | Custom hooks, Hook composition, Reusable logic, localStorage abstraction | Passed |
 | useReducer - Complex State Management | useReducer, Reducer functions, Action objects, Dispatch pattern, Complex state logic | Passed |
-| Performance Optimization | React.memo, useCallback, useMemo, Re-render optimization | — |
-| Error Boundaries and Error Handling | Error boundaries, Class component, Error handling, Fallback UI, try-catch | — |
+| Performance Optimization | React.memo, useCallback, useMemo, Re-render optimization | Not passed |
+| Error Boundaries and Error Handling | Error boundaries, Class component, Error handling, Fallback UI, try-catch | Passed |
 | React Router - Routing and Navigation | React Router, Route, Link, useNavigate, useParams, URL-driven UI, Dynamic segments | — |
 | Data Fetching - Loading and Error State | fetch, useEffect, Loading state, Error state, Async data, Conditional rendering | — |
 | useRef - Focus Management | useRef, ref.current, Focus management, DOM access, useEffect with ref | — |

@@ -8140,16 +8140,16 @@
   {
     "challengeId": "18-usereducer-complex-state",
     "challengeName": "useReducer - Complex State Management",
-    "timestamp": "2026-06-21T11:52:37.885Z",
+    "timestamp": "2026-06-21T18:58:23.396Z",
     "scores": {
       "functionalTests": 100,
-      "codeQuality": 90,
+      "codeQuality": 100,
       "architecture": 100,
       "bestPractices": 100,
       "e2eTests": 0,
       "aiReview": 88
     },
-    "totalScore": 81.7,
+    "totalScore": 83.2,
     "passed": true,
     "errors": [],
     "warnings": [],
@@ -8170,7 +8170,7 @@
               "fullName": " Challenge 18: useReducer - Complex State Management App should render",
               "status": "passed",
               "title": "App should render",
-              "duration": 53,
+              "duration": 89,
               "failureMessages": []
             },
             {
@@ -8181,12 +8181,12 @@
               "fullName": " Challenge 18: useReducer - Complex State Management TaskList should render tasks",
               "status": "passed",
               "title": "TaskList should render tasks",
-              "duration": 8,
+              "duration": 11,
               "failureMessages": []
             }
           ],
-          "startTime": 1782042760537,
-          "endTime": 1782042760598,
+          "startTime": 1782068306474,
+          "endTime": 1782068306574,
           "status": "passed",
           "message": "",
           "name": "C:/Users/swaya/OneDrive/Desktop/internship/challenge-engine-react/courses/01-react-fundamentals/project/tests/challenge-18.test.tsx"
@@ -8194,10 +8194,10 @@
       ]
     },
     "lintResults": {
-      "score": 90,
-      "passed": false,
-      "totalIssues": 1,
-      "errors": 1,
+      "score": 100,
+      "passed": true,
+      "totalIssues": 0,
+      "errors": 0,
       "warnings": 0,
       "details": [
         {
@@ -8222,50 +8222,13 @@
         },
         {
           "filePath": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\src\\components\\TaskApp.tsx",
-          "messages": [
-            {
-              "ruleId": "@typescript-eslint/no-explicit-any",
-              "severity": 2,
-              "message": "Unexpected any. Specify a different type.",
-              "line": 23,
-              "column": 29,
-              "nodeType": "TSAnyKeyword",
-              "messageId": "unexpectedAny",
-              "endLine": 23,
-              "endColumn": 32,
-              "suggestions": [
-                {
-                  "messageId": "suggestUnknown",
-                  "fix": {
-                    "range": [
-                      614,
-                      617
-                    ],
-                    "text": "unknown"
-                  },
-                  "desc": "Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct."
-                },
-                {
-                  "messageId": "suggestNever",
-                  "fix": {
-                    "range": [
-                      614,
-                      617
-                    ],
-                    "text": "never"
-                  },
-                  "desc": "Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of."
-                }
-              ]
-            }
-          ],
+          "messages": [],
           "suppressedMessages": [],
-          "errorCount": 1,
+          "errorCount": 0,
           "fatalErrorCount": 0,
           "warningCount": 0,
           "fixableErrorCount": 0,
           "fixableWarningCount": 0,
-          "source": "import React, {useEffect,useState,} from 'react'\r\nimport {ADD_TASK,UPDATE_TASK,DELETE_TASK,TOGGLE_TASK,} from '../reducers/taskReducer'\r\nimport TaskForm from './TaskForm'\r\nimport TaskList, { Task } from './TaskList'\r\nimport FilterBar from './FilterBar'\r\nimport StatsPanel from './StatsPanel'\r\nimport { useMemo } from 'react'\r\nimport { useTheme } from '../contexts/ThemeContext'\r\ntype FilterType =\r\n  | 'all'\r\n  | 'active'\r\n  | 'completed'\r\n\r\ntype SortType =\r\n  | 'recent'\r\n  | 'high-low'\r\n  | 'low-high'\r\n  | 'alphabetical'\r\n  | 'due-date'\r\n\r\ninterface TaskAppProps {\r\n  tasks: Task[]\r\n  dispatch?: React.Dispatch<any>\r\n\r\n  showForm?: boolean\r\n  countFormat?: string\r\n\r\n  onDelete?: (id: string | number) => void\r\n  showFilterBar?: boolean\r\n  showStatsPanel?: boolean\r\n  linkToTaskDetail?: boolean\r\n\r\n  [key: string]: unknown\r\n}\r\n\r\nexport default function TaskApp({\r\n  tasks,\r\n  dispatch,\r\n  showForm,\r\n  countFormat,\r\n  onDelete,\r\n  showFilterBar,\r\n  showStatsPanel,\r\n}: TaskAppProps) {\r\n  const [filter, setFilter] =\r\n    useState<FilterType>('all')\r\n\r\n  const [sortOrder, setSortOrder] =\r\n    useState<SortType>('recent')\r\n\r\n  const [searchInput, setSearchInput] =\r\n    useState('')\r\n\r\n  const [search, setSearch] =\r\n    useState('')\r\n\r\n  const [isSearching, setIsSearching] =\r\n    useState(false)\r\n\r\n  const [editingId, setEditingId] =\r\n    useState<string | number | null>(null)\r\n  const {\r\n    theme,\r\n    toggleTheme,\r\n  } = useTheme()\r\n \r\nconst [\r\n  selectedCategory,\r\n  setSelectedCategory,\r\n] = useState(\r\n  'All categories'\r\n)\r\n\r\nconst categories = [\r\n  ...new Set(\r\n    tasks.map(\r\n      (task) =>\r\n        task.category ??\r\n        'General'\r\n    )\r\n  ),\r\n]\r\nconst stats = useMemo(() => {\r\n  const total = tasks.length\r\n\r\n  const completed =\r\n    tasks.filter(\r\n      (task) =>\r\n        task.completed\r\n    ).length\r\n\r\n  const active =\r\n    total - completed\r\n\r\n  const overdue =\r\n    tasks.filter(\r\n      (task) => {\r\n        if (\r\n          !task.dueDate ||\r\n          task.completed\r\n        ) {\r\n          return false\r\n        }\r\n\r\n        return (\r\n          new Date(\r\n            task.dueDate\r\n          ) < new Date()\r\n        )\r\n      }\r\n    ).length\r\n\r\n  return {\r\n    total,\r\n    completed,\r\n    active,\r\n    overdue,\r\n  }\r\n}, [tasks])\r\n  useEffect(() => {\r\n    if (searchInput === search) {\r\n      setIsSearching(false)\r\n      return\r\n    }\r\n\r\n    setIsSearching(true)\r\n\r\n    const timeoutId = window.setTimeout(\r\n      () => {\r\n        setSearch(searchInput)\r\n        setIsSearching(false)\r\n      },\r\n      300\r\n    )\r\n\r\n    return () => {\r\n      clearTimeout(timeoutId)\r\n    }\r\n  }, [searchInput, search])\r\n\r\n  const handleAddTask = (\r\n    task: Task\r\n  ) => {\r\n    dispatch?.({\r\n      type: ADD_TASK,\r\n      payload: task,\r\n    })\r\n  }\r\n\r\n  const handleToggle = (\r\n  id: string | number\r\n) => {\r\n  dispatch?.({\r\n    type: TOGGLE_TASK,\r\n    payload: id,\r\n  })\r\n}\r\n\r\n  const handleDelete = (\r\n  id: string | number\r\n) => {\r\n  dispatch?.({\r\n    type: DELETE_TASK,\r\n    payload: id,\r\n  })\r\n}\r\n\r\n  const handleUpdateTask = (\r\n    id: string | number,\r\n    updates: {\r\n      title: string\r\n      description: string\r\n      priority: string\r\n    }\r\n  ) => {\r\n    dispatch?.({\r\n  type: UPDATE_TASK,\r\n  payload: {\r\n    id,\r\n    ...updates,\r\n  },\r\n})\r\n\r\nsetEditingId(null)\r\n\r\n    setEditingId(null)\r\n  }\r\n\r\n  let filteredTasks = tasks\r\n\r\n  if (filter === 'active') {\r\n    filteredTasks =\r\n      filteredTasks.filter(\r\n        (task) =>\r\n          !task.completed\r\n      )\r\n  }\r\n\r\n  if (filter === 'completed') {\r\n    filteredTasks =\r\n      filteredTasks.filter(\r\n        (task) =>\r\n          task.completed\r\n      )\r\n  }\r\n\r\n  if (\r\n  selectedCategory !==\r\n  'All categories'\r\n) {\r\n  filteredTasks =\r\n    filteredTasks.filter(\r\n      (task) =>\r\n        task.category ===\r\n        selectedCategory\r\n    )\r\n}\r\n\r\n  if (search.trim()) {\r\n    const searchLower =\r\n      search.toLowerCase()\r\n\r\n    filteredTasks =\r\n      filteredTasks.filter(\r\n        (task) =>\r\n          task.title\r\n            .toLowerCase()\r\n            .includes(\r\n              searchLower\r\n            ) ||\r\n          task.description\r\n            .toLowerCase()\r\n            .includes(\r\n              searchLower\r\n            )\r\n      )\r\n  }\r\n\r\n  const priorityRank = {\r\n    High: 3,\r\n    Medium: 2,\r\n    Low: 1,\r\n  }\r\n\r\n  const sortedTasks = [\r\n    ...filteredTasks,\r\n  ]\r\n\r\n  if (sortOrder === 'high-low') {\r\n    sortedTasks.sort(\r\n      (a, b) =>\r\n        priorityRank[\r\n          b.priority as keyof typeof priorityRank\r\n        ] -\r\n        priorityRank[\r\n          a.priority as keyof typeof priorityRank\r\n        ]\r\n    )\r\n  }\r\n\r\n  if (sortOrder === 'low-high') {\r\n    sortedTasks.sort(\r\n      (a, b) =>\r\n        priorityRank[\r\n          a.priority as keyof typeof priorityRank\r\n        ] -\r\n        priorityRank[\r\n          b.priority as keyof typeof priorityRank\r\n        ]\r\n    )\r\n  }\r\n\r\n  if (\r\n    sortOrder ===\r\n    'alphabetical'\r\n  ) {\r\n    sortedTasks.sort((a, b) =>\r\n      a.title\r\n        .toLowerCase()\r\n        .localeCompare(\r\n          b.title.toLowerCase()\r\n        )\r\n    )\r\n  }\r\n\r\n  if (\r\n  sortOrder ===\r\n  'due-date'\r\n) {\r\n  sortedTasks.sort(\r\n    (a, b) => {\r\n      if (\r\n        !a.dueDate &&\r\n        !b.dueDate\r\n      ) {\r\n        return 0\r\n      }\r\n\r\n      if (!a.dueDate) {\r\n        return 1\r\n      }\r\n\r\n      if (!b.dueDate) {\r\n        return -1\r\n      }\r\n\r\n      return (\r\n        new Date(\r\n          a.dueDate\r\n        ).getTime() -\r\n        new Date(\r\n          b.dueDate\r\n        ).getTime()\r\n      )\r\n    }\r\n  )\r\n}\r\n\r\n  const countText =\r\n    showFilterBar\r\n      ? `Showing ${sortedTasks.length} of ${tasks.length} tasks`\r\n      : countFormat ===\r\n          'completed'\r\n        ? `${\r\n            tasks.filter(\r\n              (task) =>\r\n                task.completed\r\n            ).length\r\n          } of ${\r\n            tasks.length\r\n          } completed`\r\n        : `${tasks.length} Tasks`\r\n\r\n  return (\r\n  <div\r\n    data-theme={theme}\r\n    style={{\r\n      backgroundColor:\r\n        theme === 'dark'\r\n          ? '#1f2937'\r\n          : '#ffffff',\r\n      color:\r\n        theme === 'dark'\r\n          ? '#ffffff'\r\n          : '#000000',\r\n      minHeight: '100vh',\r\n    }}\r\n  >\r\n    <button\r\n      id=\"theme-toggle\"\r\n      type=\"button\"\r\n      onClick={toggleTheme}\r\n    >\r\n      {theme === 'light'\r\n        ? 'Dark Mode'\r\n        : 'Light Mode'}\r\n    </button>\r\n      {showForm && (\r\n        <TaskForm\r\n          onAddTask={\r\n            handleAddTask\r\n          }\r\n        />\r\n      )}\r\n\r\n      {showFilterBar && (\r\n        <>\r\n          <FilterBar\r\n  filter={filter}\r\n  onFilterChange={\r\n    setFilter\r\n  }\r\n  sortOrder={sortOrder}\r\n  onSortChange={\r\n    setSortOrder\r\n  }\r\n  search={searchInput}\r\n  onSearchChange={\r\n    setSearchInput\r\n  }\r\n  categories={categories}\r\n  selectedCategory={\r\n    selectedCategory\r\n  }\r\n  onCategoryChange={\r\n    setSelectedCategory\r\n  }\r\n/>\r\n\r\n          {isSearching && (\r\n            <div id=\"searching-indicator\">\r\n              Searching...\r\n            </div>\r\n          )}\r\n        </>\r\n      )}\r\n\r\n      {showFilterBar &&\r\n        sortedTasks.length ===\r\n          0 && (\r\n          <div id=\"filter-empty-message\">\r\n            No tasks found\r\n          </div>\r\n        )}\r\n      {showStatsPanel && (\r\n        <StatsPanel\r\n          total={stats.total}\r\n          completed={\r\n            stats.completed\r\n          }\r\n          active={stats.active}\r\n          overdue={stats.overdue}\r\n      />\r\n      )}\r\n      <TaskList\r\n        tasks={sortedTasks}\r\n        countText={countText}\r\n        onToggle={\r\n          handleToggle\r\n        }\r\n        onDelete={\r\n          onDelete ??\r\n          handleDelete\r\n        }\r\n        onUpdateTask={\r\n          handleUpdateTask\r\n        }\r\n        editingId={\r\n          editingId\r\n        }\r\n        setEditingId={\r\n          setEditingId\r\n        }\r\n      />\r\n    </div>\r\n  )\r\n}",
           "usedDeprecatedRules": [
             {
               "ruleId": "no-extra-semi",
@@ -8377,7 +8340,7 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 1,
+                          "duration": 3,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -8390,7 +8353,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-06-21T11:52:48.134Z",
+                          "startTime": "2026-06-21T18:58:37.733Z",
                           "annotations": [],
                           "attachments": []
                         },
@@ -8398,7 +8361,7 @@
                           "workerIndex": 1,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 1,
+                          "duration": 2,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -8411,7 +8374,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 1,
-                          "startTime": "2026-06-21T11:52:49.420Z",
+                          "startTime": "2026-06-21T18:58:39.805Z",
                           "annotations": [],
                           "attachments": [
                             {
@@ -8425,7 +8388,7 @@
                           "workerIndex": 2,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 1,
+                          "duration": 2,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -8438,7 +8401,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 2,
-                          "startTime": "2026-06-21T11:52:50.676Z",
+                          "startTime": "2026-06-21T18:58:41.564Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -8461,41 +8424,733 @@
     },
     "aiReviewResults": {
       "challengeId": "18-usereducer-complex-state",
-      "timestamp": "2026-06-21T11:52:51.137Z",
+      "timestamp": "2026-06-21T18:58:42.128Z",
       "score": 88,
       "feedback": [],
       "strengths": [
-        "Effective use of TypeScript type annotations for clarity and safety",
-        "Clear separation of concerns between components and reducers",
-        "Use of memoization for performance optimization"
+        "The code is well-structured and follows a consistent naming convention.",
+        "The use of TypeScript and functional components makes the code more maintainable and scalable.",
+        "The reducer function is well-defined and easy to understand."
       ],
       "improvements": [
-        "Consider adding more descriptive variable names to improve code readability",
-        "Some reducer actions could be simplified using more concise syntax",
-        "Consider adding more tests to ensure the reducer's correctness and edge cases"
+        "Some of the action creators could be extracted into separate functions to make the code more modular and easier to read.",
+        "The `useEffect` hooks could be simplified by using the `useCallback` hook to memoize the `dispatch` function.",
+        "The `sortedTasks` calculation could be optimized by using a more efficient sorting algorithm, such as `Array.prototype.sort()` with a custom compare function."
       ],
       "readability": 85,
       "maintainability": 90,
-      "overall": "The code is well-structured, maintainable, and demonstrates good practices. However, there are some minor areas for improvement to enhance readability and test coverage."
+      "overall": "The code is well-organized and follows best practices for React and TypeScript development. However, there are some opportunities for improvement to make the code even more maintainable and efficient."
     },
     "aiResults": {
       "challengeId": "18-usereducer-complex-state",
-      "timestamp": "2026-06-21T11:52:51.137Z",
+      "timestamp": "2026-06-21T18:58:42.128Z",
       "score": 88,
       "feedback": [],
       "strengths": [
-        "Effective use of TypeScript type annotations for clarity and safety",
-        "Clear separation of concerns between components and reducers",
-        "Use of memoization for performance optimization"
+        "The code is well-structured and follows a consistent naming convention.",
+        "The use of TypeScript and functional components makes the code more maintainable and scalable.",
+        "The reducer function is well-defined and easy to understand."
       ],
       "improvements": [
-        "Consider adding more descriptive variable names to improve code readability",
-        "Some reducer actions could be simplified using more concise syntax",
-        "Consider adding more tests to ensure the reducer's correctness and edge cases"
+        "Some of the action creators could be extracted into separate functions to make the code more modular and easier to read.",
+        "The `useEffect` hooks could be simplified by using the `useCallback` hook to memoize the `dispatch` function.",
+        "The `sortedTasks` calculation could be optimized by using a more efficient sorting algorithm, such as `Array.prototype.sort()` with a custom compare function."
       ],
       "readability": 85,
       "maintainability": 90,
-      "overall": "The code is well-structured, maintainable, and demonstrates good practices. However, there are some minor areas for improvement to enhance readability and test coverage."
+      "overall": "The code is well-organized and follows best practices for React and TypeScript development. However, there are some opportunities for improvement to make the code even more maintainable and efficient."
+    }
+  },
+  {
+    "challengeId": "19-performance-optimization",
+    "challengeName": "Performance Optimization",
+    "timestamp": "2026-06-21T20:02:30.961Z",
+    "scores": {
+      "functionalTests": 100,
+      "codeQuality": 100,
+      "architecture": 100,
+      "bestPractices": 100,
+      "e2eTests": 0,
+      "aiReview": 0
+    },
+    "totalScore": 70,
+    "passed": false,
+    "errors": [],
+    "warnings": [],
+    "testResults": {
+      "score": 100,
+      "passed": true,
+      "totalTests": 2,
+      "passedTests": 2,
+      "failedTests": 0,
+      "details": [
+        {
+          "assertionResults": [
+            {
+              "ancestorTitles": [
+                "",
+                "Challenge 19: Performance Optimization"
+              ],
+              "fullName": " Challenge 19: Performance Optimization TaskCard should render",
+              "status": "passed",
+              "title": "TaskCard should render",
+              "duration": 21,
+              "failureMessages": []
+            },
+            {
+              "ancestorTitles": [
+                "",
+                "Challenge 19: Performance Optimization"
+              ],
+              "fullName": " Challenge 19: Performance Optimization TaskList should render TaskCards",
+              "status": "passed",
+              "title": "TaskList should render TaskCards",
+              "duration": 7,
+              "failureMessages": []
+            }
+          ],
+          "startTime": 1782072152930,
+          "endTime": 1782072152958,
+          "status": "passed",
+          "message": "",
+          "name": "C:/Users/swaya/OneDrive/Desktop/internship/challenge-engine-react/courses/01-react-fundamentals/project/tests/challenge-19.test.tsx"
+        }
+      ]
+    },
+    "lintResults": {
+      "score": 100,
+      "passed": true,
+      "totalIssues": 0,
+      "errors": 0,
+      "warnings": 0,
+      "details": [
+        {
+          "filePath": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\src\\App.tsx",
+          "messages": [],
+          "suppressedMessages": [],
+          "errorCount": 0,
+          "fatalErrorCount": 0,
+          "warningCount": 0,
+          "fixableErrorCount": 0,
+          "fixableWarningCount": 0,
+          "usedDeprecatedRules": [
+            {
+              "ruleId": "no-extra-semi",
+              "replacedBy": []
+            },
+            {
+              "ruleId": "no-mixed-spaces-and-tabs",
+              "replacedBy": []
+            }
+          ]
+        },
+        {
+          "filePath": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\src\\components\\TaskApp.tsx",
+          "messages": [],
+          "suppressedMessages": [],
+          "errorCount": 0,
+          "fatalErrorCount": 0,
+          "warningCount": 0,
+          "fixableErrorCount": 0,
+          "fixableWarningCount": 0,
+          "usedDeprecatedRules": [
+            {
+              "ruleId": "no-extra-semi",
+              "replacedBy": []
+            },
+            {
+              "ruleId": "no-mixed-spaces-and-tabs",
+              "replacedBy": []
+            }
+          ]
+        },
+        {
+          "filePath": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\src\\components\\TaskCard.tsx",
+          "messages": [],
+          "suppressedMessages": [],
+          "errorCount": 0,
+          "fatalErrorCount": 0,
+          "warningCount": 0,
+          "fixableErrorCount": 0,
+          "fixableWarningCount": 0,
+          "usedDeprecatedRules": [
+            {
+              "ruleId": "no-extra-semi",
+              "replacedBy": []
+            },
+            {
+              "ruleId": "no-mixed-spaces-and-tabs",
+              "replacedBy": []
+            }
+          ]
+        },
+        {
+          "filePath": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\src\\components\\TaskList.tsx",
+          "messages": [],
+          "suppressedMessages": [],
+          "errorCount": 0,
+          "fatalErrorCount": 0,
+          "warningCount": 0,
+          "fixableErrorCount": 0,
+          "fixableWarningCount": 0,
+          "usedDeprecatedRules": [
+            {
+              "ruleId": "no-extra-semi",
+              "replacedBy": []
+            },
+            {
+              "ruleId": "no-mixed-spaces-and-tabs",
+              "replacedBy": []
+            }
+          ]
+        }
+      ]
+    },
+    "architectureResults": {
+      "score": 100,
+      "passed": true,
+      "patternsFound": [
+        "functionalComponent",
+        "React.memo",
+        "useCallback",
+        "useMemo"
+      ],
+      "patternsMissing": [],
+      "details": [
+        {
+          "file": "src/components/TaskCard.tsx",
+          "patternsFound": [
+            "functionalComponent",
+            "React.memo"
+          ],
+          "patternsMissing": [
+            "useCallback",
+            "useMemo"
+          ]
+        },
+        {
+          "file": "src/components/TaskList.tsx",
+          "patternsFound": [
+            "functionalComponent"
+          ],
+          "patternsMissing": [
+            "React.memo",
+            "useCallback",
+            "useMemo"
+          ]
+        },
+        {
+          "file": "src/components/TaskApp.tsx",
+          "patternsFound": [
+            "functionalComponent",
+            "useCallback",
+            "useMemo"
+          ],
+          "patternsMissing": [
+            "React.memo"
+          ]
+        },
+        {
+          "file": "src/App.tsx",
+          "patternsFound": [
+            "functionalComponent"
+          ],
+          "patternsMissing": [
+            "React.memo",
+            "useCallback",
+            "useMemo"
+          ]
+        }
+      ]
+    },
+    "bestPracticesResults": {
+      "score": 100,
+      "passed": true,
+      "issues": [],
+      "details": [],
+      "note": "No best practices requirements specified in challenge"
+    },
+    "e2eResults": {
+      "score": 0,
+      "totalTests": 1,
+      "passedTests": 0,
+      "failedTests": 1,
+      "details": [
+        {
+          "title": "challenge-19.spec.ts",
+          "file": "challenge-19.spec.ts",
+          "column": 0,
+          "line": 0,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Challenge 19: Performance Optimization - E2E",
+              "file": "challenge-19.spec.ts",
+              "line": 3,
+              "column": 6,
+              "specs": [
+                {
+                  "title": "should display task list",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1,
+                          "error": {
+                            "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                            "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                          },
+                          "errors": [
+                            {
+                              "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-06-21T20:02:39.156Z",
+                          "annotations": [],
+                          "attachments": []
+                        },
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1,
+                          "error": {
+                            "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                            "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                          },
+                          "errors": [
+                            {
+                              "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 1,
+                          "startTime": "2026-06-21T20:02:40.179Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "trace",
+                              "contentType": "application/zip",
+                              "path": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\test-results\\challenge-19-Challenge-19--3f85f-2E-should-display-task-list-chromium-retry1\\trace.zip"
+                            }
+                          ]
+                        },
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 1,
+                          "error": {
+                            "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                            "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                          },
+                          "errors": [
+                            {
+                              "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 2,
+                          "startTime": "2026-06-21T20:02:41.169Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "9d252b4519b361f881b0-9c8b6915a27106834fce",
+                  "file": "challenge-19.spec.ts",
+                  "line": 8,
+                  "column": 3
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "error": "Command failed: npx playwright test \"tests/e2e/challenge-19.spec.ts\" --reporter=json",
+      "passed": false
+    },
+    "aiReviewResults": {
+      "challengeId": "19-performance-optimization",
+      "timestamp": "2026-06-21T20:02:41.570Z",
+      "score": 0,
+      "feedback": [],
+      "strengths": [],
+      "improvements": [],
+      "readability": 0,
+      "maintainability": 0,
+      "overall": "",
+      "error": "Groq API error (413): Request too large for model `llama-3.1-8b-instant` in organization `org_01ktb3kam2fdmvhyp9msy1rdy5` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Requested 6041, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"
+    },
+    "aiResults": {
+      "challengeId": "19-performance-optimization",
+      "timestamp": "2026-06-21T20:02:41.570Z",
+      "score": 0,
+      "feedback": [],
+      "strengths": [],
+      "improvements": [],
+      "readability": 0,
+      "maintainability": 0,
+      "overall": "",
+      "error": "Groq API error (413): Request too large for model `llama-3.1-8b-instant` in organization `org_01ktb3kam2fdmvhyp9msy1rdy5` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Requested 6041, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"
+    }
+  },
+  {
+    "challengeId": "20-error-boundaries",
+    "challengeName": "Error Boundaries and Error Handling",
+    "timestamp": "2026-06-21T20:28:46.258Z",
+    "scores": {
+      "functionalTests": 100,
+      "codeQuality": 100,
+      "architecture": 100,
+      "bestPractices": 100,
+      "e2eTests": 0,
+      "aiReview": 83
+    },
+    "totalScore": 82.45,
+    "passed": true,
+    "errors": [],
+    "warnings": [],
+    "testResults": {
+      "score": 100,
+      "passed": true,
+      "totalTests": 4,
+      "passedTests": 4,
+      "failedTests": 0,
+      "details": [
+        {
+          "assertionResults": [
+            {
+              "ancestorTitles": [
+                "",
+                "Challenge 20: Error Boundaries and Error Handling"
+              ],
+              "fullName": " Challenge 20: Error Boundaries and Error Handling ErrorBoundary should render children when no error",
+              "status": "passed",
+              "title": "ErrorBoundary should render children when no error",
+              "duration": 19,
+              "failureMessages": []
+            },
+            {
+              "ancestorTitles": [
+                "",
+                "Challenge 20: Error Boundaries and Error Handling"
+              ],
+              "fullName": " Challenge 20: Error Boundaries and Error Handling ErrorBoundary should have fallback with id=\"error-boundary-fallback\" when error caught",
+              "status": "passed",
+              "title": "ErrorBoundary should have fallback with id=\"error-boundary-fallback\" when error caught",
+              "duration": 24,
+              "failureMessages": []
+            },
+            {
+              "ancestorTitles": [
+                "",
+                "Challenge 20: Error Boundaries and Error Handling"
+              ],
+              "fullName": " Challenge 20: Error Boundaries and Error Handling ErrorBoundary should have Retry button with id=\"error-retry\"",
+              "status": "passed",
+              "title": "ErrorBoundary should have Retry button with id=\"error-retry\"",
+              "duration": 4,
+              "failureMessages": []
+            },
+            {
+              "ancestorTitles": [
+                "",
+                "Challenge 20: Error Boundaries and Error Handling"
+              ],
+              "fullName": " Challenge 20: Error Boundaries and Error Handling Retry button should be clickable",
+              "status": "passed",
+              "title": "Retry button should be clickable",
+              "duration": 75,
+              "failureMessages": []
+            }
+          ],
+          "startTime": 1782073728279,
+          "endTime": 1782073728401,
+          "status": "passed",
+          "message": "",
+          "name": "C:/Users/swaya/OneDrive/Desktop/internship/challenge-engine-react/courses/01-react-fundamentals/project/tests/challenge-20.test.tsx"
+        }
+      ]
+    },
+    "lintResults": {
+      "score": 100,
+      "passed": true,
+      "totalIssues": 0,
+      "errors": 0,
+      "warnings": 0,
+      "details": [
+        {
+          "filePath": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\src\\components\\ErrorBoundary.tsx",
+          "messages": [],
+          "suppressedMessages": [],
+          "errorCount": 0,
+          "fatalErrorCount": 0,
+          "warningCount": 0,
+          "fixableErrorCount": 0,
+          "fixableWarningCount": 0,
+          "usedDeprecatedRules": [
+            {
+              "ruleId": "no-extra-semi",
+              "replacedBy": []
+            },
+            {
+              "ruleId": "no-mixed-spaces-and-tabs",
+              "replacedBy": []
+            }
+          ]
+        },
+        {
+          "filePath": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\src\\components\\TaskApp.tsx",
+          "messages": [],
+          "suppressedMessages": [],
+          "errorCount": 0,
+          "fatalErrorCount": 0,
+          "warningCount": 0,
+          "fixableErrorCount": 0,
+          "fixableWarningCount": 0,
+          "usedDeprecatedRules": [
+            {
+              "ruleId": "no-extra-semi",
+              "replacedBy": []
+            },
+            {
+              "ruleId": "no-mixed-spaces-and-tabs",
+              "replacedBy": []
+            }
+          ]
+        },
+        {
+          "filePath": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\src\\hooks\\useLocalStorage.ts",
+          "messages": [],
+          "suppressedMessages": [],
+          "errorCount": 0,
+          "fatalErrorCount": 0,
+          "warningCount": 0,
+          "fixableErrorCount": 0,
+          "fixableWarningCount": 0,
+          "usedDeprecatedRules": [
+            {
+              "ruleId": "no-extra-semi",
+              "replacedBy": []
+            },
+            {
+              "ruleId": "no-mixed-spaces-and-tabs",
+              "replacedBy": []
+            }
+          ]
+        }
+      ]
+    },
+    "architectureResults": {
+      "score": 100,
+      "passed": true,
+      "patternsFound": [
+        "functionalComponent"
+      ],
+      "patternsMissing": [],
+      "details": [
+        {
+          "file": "src/components/ErrorBoundary.tsx",
+          "patternsFound": [],
+          "patternsMissing": [
+            "functionalComponent"
+          ]
+        },
+        {
+          "file": "src/components/TaskApp.tsx",
+          "patternsFound": [
+            "functionalComponent"
+          ],
+          "patternsMissing": []
+        },
+        {
+          "file": "src/hooks/useLocalStorage.ts",
+          "patternsFound": [],
+          "patternsMissing": [
+            "functionalComponent"
+          ]
+        }
+      ]
+    },
+    "bestPracticesResults": {
+      "score": 100,
+      "passed": true,
+      "issues": [],
+      "details": [],
+      "note": "No best practices requirements specified in challenge"
+    },
+    "e2eResults": {
+      "score": 0,
+      "totalTests": 1,
+      "passedTests": 0,
+      "failedTests": 1,
+      "details": [
+        {
+          "title": "challenge-20.spec.ts",
+          "file": "challenge-20.spec.ts",
+          "column": 0,
+          "line": 0,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Challenge 20: Error Boundaries - E2E",
+              "file": "challenge-20.spec.ts",
+              "line": 3,
+              "column": 6,
+              "specs": [
+                {
+                  "title": "should display task list or main content",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 2,
+                          "error": {
+                            "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                            "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                          },
+                          "errors": [
+                            {
+                              "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-06-21T20:28:55.880Z",
+                          "annotations": [],
+                          "attachments": []
+                        },
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 2,
+                          "error": {
+                            "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                            "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                          },
+                          "errors": [
+                            {
+                              "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 1,
+                          "startTime": "2026-06-21T20:28:57.434Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "trace",
+                              "contentType": "application/zip",
+                              "path": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\test-results\\challenge-20-Challenge-20--06b6f-y-task-list-or-main-content-chromium-retry1\\trace.zip"
+                            }
+                          ]
+                        },
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 3,
+                          "error": {
+                            "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                            "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                          },
+                          "errors": [
+                            {
+                              "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 2,
+                          "startTime": "2026-06-21T20:28:58.962Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "1d641d769955c6bc30c0-ac7bb770a40f47a29acf",
+                  "file": "challenge-20.spec.ts",
+                  "line": 8,
+                  "column": 3
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "error": "Command failed: npx playwright test \"tests/e2e/challenge-20.spec.ts\" --reporter=json",
+      "passed": false
+    },
+    "aiReviewResults": {
+      "challengeId": "20-error-boundaries",
+      "timestamp": "2026-06-21T20:28:59.560Z",
+      "score": 83,
+      "feedback": [],
+      "strengths": [
+        "The use of TypeScript and React hooks is well-implemented and follows best practices.",
+        "The code is well-organized, with clear separation of concerns between components and hooks.",
+        "Error handling is implemented using try-catch blocks and error boundaries, which is a good practice."
+      ],
+      "improvements": [
+        "Some of the code could be refactored to reduce repetition and improve readability. For example, the `handleAddTask`, `handleToggle`, `handleDelete`, and `handleUpdateTask` functions are similar and could be combined into a single function with a more generic name.",
+        "The `useLocalStorage` hook could be improved by adding more robust error handling and edge cases. For example, it currently ignores any errors that occur when setting the item in local storage, which could lead to unexpected behavior.",
+        "The `TaskApp` component is quite large and could be broken down into smaller, more manageable components. This would improve maintainability and make it easier to reason about the code."
+      ],
+      "readability": 85,
+      "maintainability": 80,
+      "overall": "The code is well-structured and follows best practices for React and TypeScript development. However, there are opportunities for improvement in terms of code organization, error handling, and maintainability."
+    },
+    "aiResults": {
+      "challengeId": "20-error-boundaries",
+      "timestamp": "2026-06-21T20:28:59.560Z",
+      "score": 83,
+      "feedback": [],
+      "strengths": [
+        "The use of TypeScript and React hooks is well-implemented and follows best practices.",
+        "The code is well-organized, with clear separation of concerns between components and hooks.",
+        "Error handling is implemented using try-catch blocks and error boundaries, which is a good practice."
+      ],
+      "improvements": [
+        "Some of the code could be refactored to reduce repetition and improve readability. For example, the `handleAddTask`, `handleToggle`, `handleDelete`, and `handleUpdateTask` functions are similar and could be combined into a single function with a more generic name.",
+        "The `useLocalStorage` hook could be improved by adding more robust error handling and edge cases. For example, it currently ignores any errors that occur when setting the item in local storage, which could lead to unexpected behavior.",
+        "The `TaskApp` component is quite large and could be broken down into smaller, more manageable components. This would improve maintainability and make it easier to reason about the code."
+      ],
+      "readability": 85,
+      "maintainability": 80,
+      "overall": "The code is well-structured and follows best practices for React and TypeScript development. However, there are opportunities for improvement in terms of code organization, error handling, and maintainability."
     }
   }
 ]

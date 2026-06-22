@@ -45,6 +45,7 @@ export default function TaskApp({
   onDelete,
   showFilterBar,
   showStatsPanel,
+  linkToTaskDetail,
 }: TaskAppProps) {
   const [filter, setFilter] =
     useState<FilterType>('all')
@@ -326,7 +327,7 @@ const stats = useMemo(() => {
   )
 }
 
-return filteredTasks
+return sortedTasks
 }, [
   tasks,
   filter,
@@ -432,6 +433,7 @@ return filteredTasks
       )}
       <ErrorBoundary>
   <TaskList
+  linkToTaskDetail={linkToTaskDetail}
     tasks={sortedTasks}
     countText={countText}
     onToggle={

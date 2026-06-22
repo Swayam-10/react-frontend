@@ -414,22 +414,6 @@
     }
   },
   {
-    "challengeId": "19-performance-optimization",
-    "challengeName": "Performance Optimization",
-    "aiReview": {
-      "challengeId": "19-performance-optimization",
-      "timestamp": "2026-06-21T20:02:41.570Z",
-      "score": 0,
-      "feedback": [],
-      "strengths": [],
-      "improvements": [],
-      "readability": 0,
-      "maintainability": 0,
-      "overall": "",
-      "error": "Groq API error (413): Request too large for model `llama-3.1-8b-instant` in organization `org_01ktb3kam2fdmvhyp9msy1rdy5` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Requested 6041, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"
-    }
-  },
-  {
     "challengeId": "20-error-boundaries",
     "challengeName": "Error Boundaries and Error Handling",
     "aiReview": {
@@ -450,6 +434,61 @@
       "readability": 85,
       "maintainability": 80,
       "overall": "The code is well-structured and follows best practices for React and TypeScript development. However, there are opportunities for improvement in terms of code organization, error handling, and maintainability."
+    }
+  },
+  {
+    "challengeId": "21-react-router",
+    "challengeName": "React Router - Routing and Navigation",
+    "aiReview": {
+      "challengeId": "21-react-router",
+      "timestamp": "2026-06-22T04:37:54.214Z",
+      "score": 0,
+      "feedback": [],
+      "strengths": [],
+      "improvements": [],
+      "readability": 0,
+      "maintainability": 0,
+      "overall": "",
+      "error": "Groq API error (413): Request too large for model `llama-3.1-8b-instant` in organization `org_01ktb3kam2fdmvhyp9msy1rdy5` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Requested 6477, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"
+    }
+  },
+  {
+    "challengeId": "19-performance-optimization",
+    "challengeName": "Performance Optimization",
+    "aiReview": {
+      "challengeId": "19-performance-optimization",
+      "timestamp": "2026-06-22T04:39:29.935Z",
+      "score": 0,
+      "feedback": [],
+      "strengths": [],
+      "improvements": [],
+      "readability": 0,
+      "maintainability": 0,
+      "overall": "",
+      "error": "Groq API error (413): Request too large for model `llama-3.1-8b-instant` in organization `org_01ktb3kam2fdmvhyp9msy1rdy5` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Requested 6090, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"
+    }
+  },
+  {
+    "challengeId": "22-data-fetching",
+    "challengeName": "Data Fetching - Loading and Error State",
+    "aiReview": {
+      "challengeId": "22-data-fetching",
+      "timestamp": "2026-06-22T04:43:03.797Z",
+      "score": 88,
+      "feedback": [],
+      "strengths": [
+        "The code is well-structured and easy to follow, with clear separation of concerns between the data fetching and rendering logic.",
+        "The use of TypeScript and functional components makes the code more maintainable and scalable.",
+        "The code includes proper error handling and loading state management, which is essential for a real-world application."
+      ],
+      "improvements": [
+        "The code could benefit from more descriptive variable names, especially in the `useEffect` hook where the `controller` and `loadData` variables are used.",
+        "Consider adding more comments to explain the purpose of the `AbortController` and how it's used to prevent memory leaks.",
+        "The error handling could be improved by providing more specific error messages or logging the error for debugging purposes."
+      ],
+      "readability": 85,
+      "maintainability": 90,
+      "overall": "The code is well-structured and maintainable, with a good balance between simplicity and functionality. However, there are some minor improvements that could be made to enhance readability and error handling."
     }
   }
 ]

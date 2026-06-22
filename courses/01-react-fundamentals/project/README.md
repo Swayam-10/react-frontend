@@ -68,12 +68,12 @@ npm run review -- --challenge=01-static-task-display
 
 ## 📊 Progress Evidence
 
-*Auto-updated when you run review. Last run: 22/6/2026, 1:59:00 am*
+*Auto-updated when you run review. Last run: 22/6/2026, 10:13:05 am*
 
 | Metric | Value |
 |--------|-------|
-| Challenges completed | 19 / 23 (82.6%) |
-| Average score | 82.3% |
+| Challenges completed | 20 / 23 (87%) |
+| Average score | 81.8% |
 
 | Challenge | Skills covered | Status |
 |-----------|----------------|--------|
@@ -97,8 +97,8 @@ npm run review -- --challenge=01-static-task-display
 | useReducer - Complex State Management | useReducer, Reducer functions, Action objects, Dispatch pattern, Complex state logic | Passed |
 | Performance Optimization | React.memo, useCallback, useMemo, Re-render optimization | Not passed |
 | Error Boundaries and Error Handling | Error boundaries, Class component, Error handling, Fallback UI, try-catch | Passed |
-| React Router - Routing and Navigation | React Router, Route, Link, useNavigate, useParams, URL-driven UI, Dynamic segments | — |
-| Data Fetching - Loading and Error State | fetch, useEffect, Loading state, Error state, Async data, Conditional rendering | — |
+| React Router - Routing and Navigation | React Router, Route, Link, useNavigate, useParams, URL-driven UI, Dynamic segments | Not passed |
+| Data Fetching - Loading and Error State | fetch, useEffect, Loading state, Error state, Async data, Conditional rendering | Passed |
 | useRef - Focus Management | useRef, ref.current, Focus management, DOM access, useEffect with ref | — |
 
 ## 📋 Challenge Workflow

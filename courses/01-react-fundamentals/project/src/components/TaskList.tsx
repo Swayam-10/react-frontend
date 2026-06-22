@@ -13,6 +13,7 @@ export interface Task {
 
 interface TaskListProps {
   tasks?: Task[]
+  linkToTaskDetail?: boolean
   countText?: string
   onToggle?: (
     id: string | number
@@ -82,6 +83,7 @@ export default function TaskList({
   onUpdateTask,
   editingId,
   setEditingId,
+  linkToTaskDetail,
 }: TaskListProps) {
   const list =
     tasks ?? HARDCODED_TASKS
@@ -127,6 +129,7 @@ export default function TaskList({
             setEditingId={
               setEditingId
             }
+            linkToTaskDetail={linkToTaskDetail}
           />
         ))}
       </section>

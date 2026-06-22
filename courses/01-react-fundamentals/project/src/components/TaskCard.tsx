@@ -1,12 +1,12 @@
 import React, {useEffect,useState,} from 'react'
-
+import { Link } from 'react-router-dom'
 interface TaskCardProps {
   id?: string | number
   title: string
   description: string
   priority?: string
   completed?: boolean
-
+  linkToTaskDetail?: boolean
   category?: string
   tags?: string[]
   dueDate?: string
@@ -43,6 +43,7 @@ function TaskCard({
   onUpdateTask,
   editingId,
   setEditingId,
+  linkToTaskDetail,
 }: TaskCardProps) {
   const isEditing =
     editingId !== undefined &&
@@ -245,14 +246,22 @@ const isDueSoon =
       )}
 
       <h2
-        style={{
-          textDecoration: completed
-            ? 'line-through'
-            : 'none',
-        }}
-      >
-        {title}
-      </h2>
+  style={{
+    textDecoration: completed
+      ? 'line-through'
+      : 'none',
+  }}
+>
+  {linkToTaskDetail ? (
+    <Link
+      to={`/challenge/21-react-router/task/${id}`}
+    >
+      {title}
+    </Link>
+  ) : (
+    title
+  )}
+</h2>
 
       <p
         style={{

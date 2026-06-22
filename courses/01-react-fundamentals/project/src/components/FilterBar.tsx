@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 type FilterType =
   | 'all'
   | 'active'
@@ -11,55 +12,64 @@ type SortType =
   | 'due-date'
 
 interface FilterBarProps {
-  filter: FilterType
+  filter?: FilterType
 
-  onFilterChange: (
+  onFilterChange?: (
     filter: FilterType
   ) => void
 
-  sortOrder: SortType
+  sortOrder?: SortType
 
-  onSortChange: (
+  onSortChange?: (
     sort: SortType
   ) => void
 
-  search: string
+  search?: string
+  searchQuery?: string
 
-  onSearchChange: (
+  onSearchChange?: (
     value: string
   ) => void
 
-  categories: string[]
+  categories?: string[]
 
-  selectedCategory: string
+  selectedCategory?: string
 
-  onCategoryChange: (
+  onCategoryChange?: (
     category: string
   ) => void
 }
 
 export default function FilterBar({
-  filter,
-  onFilterChange,
-  sortOrder,
-  onSortChange,
-  search,
-  onSearchChange,
-  categories,
-  selectedCategory,
-  onCategoryChange,
+  filter = 'all',
+  onFilterChange = () => {},
+  sortOrder = 'recent',
+  onSortChange = () => {},
+  search = '',
+  searchQuery = '',
+  onSearchChange = () => {},
+  categories = [],
+  selectedCategory = 'All categories',
+  onCategoryChange = () => {},
 }: FilterBarProps) {
+  const searchInputRef =
+  useRef<HTMLInputElement>(null)
+
+useEffect(() => {
+  if (searchInputRef.current) {
+    searchInputRef.current.focus()
+  }
+}, [])
   return (
     <div id="filter-bar">
       <input
+        ref={searchInputRef}
         id="search-input"
         type="text"
         placeholder="Search tasks"
-        value={search}
+        value={search || searchQuery}
         onChange={(e) =>
-          onSearchChange(
-            e.target.value
-          )
+          onSearchChange(e.target.value)
         }
       />
 

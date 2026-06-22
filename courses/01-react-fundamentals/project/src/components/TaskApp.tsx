@@ -1,459 +1,146 @@
-import React, {useEffect,useState,useCallback} from 'react'
-import {ADD_TASK,UPDATE_TASK,DELETE_TASK,TOGGLE_TASK,} from '../reducers/taskReducer'
-import TaskForm from './TaskForm'
-import TaskList, { Task } from './TaskList'
-import FilterBar from './FilterBar'
-import StatsPanel from './StatsPanel'
-import { useMemo } from 'react'
-import { useTheme } from '../contexts/ThemeContext'
-import ErrorBoundary from './ErrorBoundary'
-type FilterType =
-  | 'all'
-  | 'active'
-  | 'completed'
-
-type SortType =
-  | 'recent'
-  | 'high-low'
-  | 'low-high'
-  | 'alphabetical'
-  | 'due-date'
+import { useEffect, useState, useCallback, useMemo } from "react";
+import TaskList from "./TaskList";
+import TaskForm from "./TaskForm";
+import FilterBar from "./FilterBar";
+import StatsPanel from "./StatsPanel";
+import type { Task } from "./TaskList";
 
 interface TaskAppProps {
-  tasks: Task[]
-  dispatch?: React.Dispatch<{
-  type: string
-  payload?: unknown
-}>
-
-  showForm?: boolean
-  countFormat?: string
-
-  onDelete?: (id: string | number) => void
-  showFilterBar?: boolean
-  showStatsPanel?: boolean
-  linkToTaskDetail?: boolean
-
-  [key: string]: unknown
+  tasks: Task[];
+  setTasks?: (value: Task[] | ((prev: Task[]) => Task[])) => void;
+  showForm?: boolean;
+  onDelete?: (id: string | number) => void;
+  showFilterBar?: boolean;
+  showStatsPanel?: boolean;
 }
 
 export default function TaskApp({
   tasks,
-  dispatch,
+  setTasks,
   showForm,
-  countFormat,
   onDelete,
   showFilterBar,
   showStatsPanel,
-  linkToTaskDetail,
 }: TaskAppProps) {
-  const [filter, setFilter] =
-    useState<FilterType>('all')
+  const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
+  const [sortOrder, setSortOrder] = useState("recent");
+  const [searchText, setSearchText] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [editingId, setEditingId] = useState<string | number | null>(null);
 
-  const [sortOrder, setSortOrder] =
-    useState<SortType>('recent')
-
-  const [searchInput, setSearchInput] =
-    useState('')
-
-  const [search, setSearch] =
-    useState('')
-
-  const [isSearching, setIsSearching] =
-    useState(false)
-
-  const [editingId, setEditingId] =
-    useState<string | number | null>(null)
-  const {
-    theme,
-    toggleTheme,
-  } = useTheme()
- 
-const [
-  selectedCategory,
-  setSelectedCategory,
-] = useState(
-  'All categories'
-)
-
-const categories = [
-  ...new Set(
-    tasks.map(
-      (task) =>
-        task.category ??
-        'General'
-    )
-  ),
-]
-const stats = useMemo(() => {
-  const total = tasks.length
-
-  const completed =
-    tasks.filter(
-      (task) =>
-        task.completed
-    ).length
-
-  const active =
-    total - completed
-
-  const overdue =
-    tasks.filter(
-      (task) => {
-        if (
-          !task.dueDate ||
-          task.completed
-        ) {
-          return false
-        }
-
-        return (
-          new Date(
-            task.dueDate
-          ) < new Date()
-        )
-      }
-    ).length
-
-  return {
-    total,
-    completed,
-    active,
-    overdue,
-  }
-}, [tasks])
   useEffect(() => {
-    if (searchInput === search) {
-      setIsSearching(false)
-      return
-    }
+    const timeout = window.setTimeout(() => {
+      setDebouncedSearch(searchText);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [searchText]);
 
-    setIsSearching(true)
+  const handleAddTask = useCallback((task: Task) => {
+    if (setTasks) setTasks((prev) => [...prev, task]);
+  }, [setTasks]);
 
-    const timeoutId = window.setTimeout(
-      () => {
-        setSearch(searchInput)
-        setIsSearching(false)
-      },
-      300
-    )
-
-    return () => {
-      clearTimeout(timeoutId)
-    }
-  }, [searchInput, search])
-
-  const handleAddTask =
-  useCallback(
-    (task: Task) => {
-      dispatch?.({
-        type: ADD_TASK,
-        payload: task,
-      })
-    },
-    [dispatch]
-  )
-  const handleToggle =
-  useCallback(
-    (id: string | number) => {
-      dispatch?.({
-        type: TOGGLE_TASK,
-        payload: id,
-      })
-    },
-    [dispatch]
-  )
-
-  const handleDelete =
-  useCallback(
-    (id: string | number) => {
-      dispatch?.({
-        type: DELETE_TASK,
-        payload: id,
-      })
-    },
-    [dispatch]
-  )
-  const handleUpdateTask =
-  useCallback(
-    (
-      id: string | number,
-      updates: {
-        title: string
-        description: string
-        priority: string
-      }
-    ) => {
-      dispatch?.({
-        type: UPDATE_TASK,
-        payload: {
-          id,
-          ...updates,
-        },
-      })
-
-      setEditingId(null)
-    },
-    [dispatch]
-  )
- const sortedTasks = useMemo(() => {
-  let filteredTasks = [...tasks]
-
-  if (filter === 'active') {
-    filteredTasks =
-      filteredTasks.filter(
-        (task) =>
-          !task.completed
+  const handleToggle = useCallback((id: string | number) => {
+    if (!setTasks) return;
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
       )
-  }
+    );
+  }, [setTasks]);
 
-  if (filter === 'completed') {
-    filteredTasks =
-      filteredTasks.filter(
-        (task) =>
-          task.completed
-      )
-  }
+  const handleUpdateTask = useCallback((
+    id: string | number,
+    updates: { title: string; description: string; priority: string }
+  ) => {
+    if (!setTasks) return;
+    if (!updates.title.trim()) return;
+    setTasks((prev) =>
+      prev.map((task) => task.id === id ? { ...task, ...updates } : task)
+    );
+    setEditingId(null);
+  }, [setTasks]);
 
-  if (
-  selectedCategory !==
-  'All categories'
-) {
-  filteredTasks =
-    filteredTasks.filter(
-      (task) =>
-        task.category ===
-        selectedCategory
-    )
-}
+  const categories = useMemo(() => [
+    ...new Set(tasks.map((task) => task.category).filter(Boolean)),
+  ], [tasks]);
 
-  if (search.trim()) {
-    const searchLower =
-      search.toLowerCase()
+  const sortedTasks = useMemo(() => {
+    const priorityValue: Record<string, number> = { High: 3, Medium: 2, Low: 1 };
 
-    filteredTasks =
-      filteredTasks.filter(
-        (task) =>
-          task.title
-            .toLowerCase()
-            .includes(
-              searchLower
-            ) ||
-          task.description
-            .toLowerCase()
-            .includes(
-              searchLower
-            )
-      )
-  }
+    const statusFiltered =
+      filter === "all"
+        ? tasks
+        : filter === "active"
+        ? tasks.filter((t) => !t.completed)
+        : tasks.filter((t) => t.completed);
 
-  const priorityRank = {
-    High: 3,
-    Medium: 2,
-    Low: 1,
-  }
+    const categoryFiltered =
+      categoryFilter === ""
+        ? statusFiltered
+        : statusFiltered.filter((task) => task.category === categoryFilter);
 
-  const sortedTasks = [
-    ...filteredTasks,
-  ]
-
-  if (sortOrder === 'high-low') {
-    sortedTasks.sort(
-      (a, b) =>
-        priorityRank[
-          b.priority as keyof typeof priorityRank
-        ] -
-        priorityRank[
-          a.priority as keyof typeof priorityRank
-        ]
-    )
-  }
-
-  if (sortOrder === 'low-high') {
-    sortedTasks.sort(
-      (a, b) =>
-        priorityRank[
-          a.priority as keyof typeof priorityRank
-        ] -
-        priorityRank[
-          b.priority as keyof typeof priorityRank
-        ]
-    )
-  }
-
-  if (
-    sortOrder ===
-    'alphabetical'
-  ) {
-    sortedTasks.sort((a, b) =>
-      a.title
-        .toLowerCase()
-        .localeCompare(
-          b.title.toLowerCase()
-        )
-    )
-  }
-
-  if (
-  sortOrder ===
-  'due-date'
-) {
-  sortedTasks.sort(
-    (a, b) => {
-      if (
-        !a.dueDate &&
-        !b.dueDate
-      ) {
-        return 0
-      }
-
-      if (!a.dueDate) {
-        return 1
-      }
-
-      if (!b.dueDate) {
-        return -1
-      }
-
+    const searchedTasks = categoryFiltered.filter((task) => {
+      const search = debouncedSearch.toLowerCase();
       return (
-        new Date(
-          a.dueDate
-        ).getTime() -
-        new Date(
-          b.dueDate
-        ).getTime()
-      )
-    }
-  )
-}
+        task.title.toLowerCase().includes(search) ||
+        task.description.toLowerCase().includes(search)
+      );
+    });
 
-return sortedTasks
-}, [
-  tasks,
-  filter,
-  selectedCategory,
-  search,
-  sortOrder,
-])
-  const countText =
-    showFilterBar
-      ? `Showing ${sortedTasks.length} of ${tasks.length} tasks`
-      : countFormat ===
-          'completed'
-        ? `${
-            tasks.filter(
-              (task) =>
-                task.completed
-            ).length
-          } of ${
-            tasks.length
-          } completed`
-        : `${tasks.length} Tasks`
+    return [...searchedTasks].sort((a, b) => {
+      if (sortOrder === "high") return priorityValue[b.priority] - priorityValue[a.priority];
+      if (sortOrder === "low") return priorityValue[a.priority] - priorityValue[b.priority];
+      if (sortOrder === "alphabetical") return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+      if (sortOrder === "dueDate") {
+        if (!a.dueDate && !b.dueDate) return 0;
+        if (!a.dueDate) return 1;
+        if (!b.dueDate) return -1;
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      }
+      return 0;
+    });
+  }, [tasks, filter, sortOrder, debouncedSearch, categoryFilter]);
 
   return (
-  <div
-    data-theme={theme}
-    style={{
-      backgroundColor:
-        theme === 'dark'
-          ? '#1f2937'
-          : '#ffffff',
-      color:
-        theme === 'dark'
-          ? '#ffffff'
-          : '#000000',
-      minHeight: '100vh',
-    }}
-  >
-    <button
-      id="theme-toggle"
-      type="button"
-      onClick={toggleTheme}
-    >
-      {theme === 'light'
-        ? 'Dark Mode'
-        : 'Light Mode'}
-    </button>
-      {showForm && (
-        <TaskForm
-          onAddTask={
-            handleAddTask
-          }
+    <div>
+      {showForm && <TaskForm onAddTask={handleAddTask} />}
+
+      {showStatsPanel && <StatsPanel tasks={tasks} />}
+
+      {showFilterBar && (
+        <FilterBar
+          filter={filter}
+          onFilterChange={setFilter}
+          sortOrder={sortOrder}
+          onSortChange={setSortOrder}
+          searchText={searchText}
+          onSearchChange={setSearchText}
+          onClearSearch={() => setSearchText("")}
+          isSearching={searchText !== debouncedSearch}
+          categoryFilter={categoryFilter}
+          onCategoryFilterChange={setCategoryFilter}
+          categories={categories}
         />
       )}
 
-      {showFilterBar && (
-        <>
-          <FilterBar
-  filter={filter}
-  onFilterChange={
-    setFilter
-  }
-  sortOrder={sortOrder}
-  onSortChange={
-    setSortOrder
-  }
-  search={searchInput}
-  onSearchChange={
-    setSearchInput
-  }
-  categories={categories}
-  selectedCategory={
-    selectedCategory
-  }
-  onCategoryChange={
-    setSelectedCategory
-  }
-/>
+      <div id="task-count">
+        Showing {sortedTasks.length} of {tasks.length} tasks
+      </div>
 
-          {isSearching && (
-            <div id="searching-indicator">
-              Searching...
-            </div>
-          )}
-        </>
+      {sortedTasks.length === 0 ? (
+        <div id="filter-empty-message">No tasks found</div>
+      ) : (
+        <TaskList
+          tasks={sortedTasks}
+          onToggle={handleToggle}
+          onDelete={onDelete}
+          countText={Showing ${sortedTasks.length} of ${tasks.length} tasks}
+          onUpdateTask={handleUpdateTask}
+          editingId={editingId}
+          setEditingId={setEditingId}
+        />
       )}
-
-      {showFilterBar &&
-        sortedTasks.length ===
-          0 && (
-          <div id="filter-empty-message">
-            No tasks found
-          </div>
-        )}
-      {showStatsPanel && (
-        <StatsPanel
-          total={stats.total}
-          completed={
-            stats.completed
-          }
-          active={stats.active}
-          overdue={stats.overdue}
-      />
-      )}
-      <ErrorBoundary>
-  <TaskList
-  linkToTaskDetail={linkToTaskDetail}
-    tasks={sortedTasks}
-    countText={countText}
-    onToggle={
-      handleToggle
-    }
-    onDelete={
-      onDelete ??
-      handleDelete
-    }
-    onUpdateTask={
-      handleUpdateTask
-    }
-    editingId={
-      editingId
-    }
-    setEditingId={
-      setEditingId
-    }
-  />
-</ErrorBoundary>
     </div>
-  )
+  );
 }

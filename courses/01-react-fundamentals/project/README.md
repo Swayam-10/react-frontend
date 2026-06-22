@@ -68,12 +68,12 @@ npm run review -- --challenge=01-static-task-display
 
 ## 📊 Progress Evidence
 
-*Auto-updated when you run review. Last run: 22/6/2026, 10:24:04 am*
+*Auto-updated when you run review. Last run: 22/6/2026, 12:14:44 pm*
 
 | Metric | Value |
 |--------|-------|
-| Challenges completed | 21 / 23 (91.3%) |
-| Average score | 81.9% |
+| Challenges completed | 22 / 23 (95.7%) |
+| Average score | 82.4% |
 
 | Challenge | Skills covered | Status |
 |-----------|----------------|--------|
@@ -95,7 +95,7 @@ npm run review -- --challenge=01-static-task-display
 | Context API - Theme Management | React Context, createContext, Provider, useContext, Global state, Custom hook | Passed |
 | Custom Hook - useLocalStorage | Custom hooks, Hook composition, Reusable logic, localStorage abstraction | Passed |
 | useReducer - Complex State Management | useReducer, Reducer functions, Action objects, Dispatch pattern, Complex state logic | Passed |
-| Performance Optimization | React.memo, useCallback, useMemo, Re-render optimization | Not passed |
+| Performance Optimization | React.memo, useCallback, useMemo, Re-render optimization | Passed |
 | Error Boundaries and Error Handling | Error boundaries, Class component, Error handling, Fallback UI, try-catch | Passed |
 | React Router - Routing and Navigation | React Router, Route, Link, useNavigate, useParams, URL-driven UI, Dynamic segments | Not passed |
 | Data Fetching - Loading and Error State | fetch, useEffect, Loading state, Error state, Async data, Conditional rendering | Passed |

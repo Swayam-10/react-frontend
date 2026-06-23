@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-
+import { Link } from 'react-router-dom'
 interface TaskCardProps {
   title: string;
   description: string;
   priority?: string;
   completed?: boolean;
   dueDate?: string;
+  linkToTaskDetail?: boolean
   onToggle?: (id: string | number) => void;
   onDelete?: (id: string | number) => void;
   taskId?: string | number;
@@ -21,42 +22,23 @@ interface TaskCardProps {
     }
   ) => void;
 }
-
-function TaskCard({
-  title,
-  description,
-  priority = "Low",
-  completed,
-  dueDate,
-  onToggle,
-  onDelete,
-  taskId,
-  id,
-  editingId,
-  setEditingId,
-  onUpdateTask,
+function TaskCard({title,description,priority = "Low",completed,dueDate,onToggle,onDelete,taskId,id,editingId,setEditingId,onUpdateTask,linkToTaskDetail=false,
 }: TaskCardProps) {
   const resolvedId = taskId ?? id ?? 0;
   const isEditing = editingId === resolvedId;
-
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
   const due = dueDate ? new Date(dueDate) : null;
   if (due) due.setHours(0, 0, 0, 0);
-
   const diffDays = due
     ? Math.ceil((due.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
     : null;
-
   const isOverdue = !!due && diffDays! < 0 && !completed;
   const isDueToday = !!due && diffDays === 0;
   const isDueSoon = !!due && diffDays! > 0 && diffDays! <= 3;
-
   const [editTitle, setEditTitle] = useState(title);
   const [editDescription, setEditDescription] = useState(description);
   const [editPriority, setEditPriority] = useState(priority);
-
   useEffect(() => {
     if (isEditing) {
       setEditTitle(title);
@@ -64,7 +46,6 @@ function TaskCard({
       setEditPriority(priority);
     }
   }, [isEditing, title, description, priority]);
-
   const handleSave = () => {
     if (!editTitle.trim()) return;
     onUpdateTask?.(resolvedId, {
@@ -74,14 +55,12 @@ function TaskCard({
     });
     setEditingId?.(null);
   };
-
   const handleCancel = () => {
     setEditTitle(title);
     setEditDescription(description);
     setEditPriority(priority);
     setEditingId?.(null);
   };
-
   return (
     <article
       id="task-card"
@@ -100,7 +79,6 @@ function TaskCard({
           onChange={() => onToggle(resolvedId)}
         />
       )}
-
       {isEditing ? (
         <>
           <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
@@ -115,7 +93,24 @@ function TaskCard({
         </>
       ) : (
         <>
-          <h2 style={completed ? { textDecoration: "line-through" } : undefined}>{title}</h2>
+          <h2
+  style={{
+    textDecoration: completed
+      ? 'line-through'
+      : 'none',
+  }}
+>
+  {linkToTaskDetail ? (
+  <Link
+    id=task-link-${resolvedId}
+    to=/challenge/21-react-router/task/${resolvedId}
+  >
+    {title}
+  </Link>
+) : (
+  title
+)}
+</h2>
           <p style={completed ? { textDecoration: "line-through" } : undefined}>{description}</p>
           <p>Priority: {priority}</p>
           {dueDate && (
@@ -144,5 +139,4 @@ function TaskCard({
     </article>
   );
 }
-
 export default React.memo(TaskCard);

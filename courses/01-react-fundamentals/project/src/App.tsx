@@ -7,9 +7,8 @@ import TaskDetailPage from "./components/TaskDetailPage";
 import FetchDemoView from "./components/FetchDemoView";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import type { Task } from "./components/TaskList";
-import { useLocalStorage } from "./hooks";
+import  useLocalStorage  from "./hooks/useLocalStorage";
 import { taskReducer, SET_TASKS } from "./reducers/taskReducer";
-
 const INITIAL_TASKS: Task[] = [
   { id: 1, title: "First Task", description: "Description one", priority: "High", completed: false, category: "Work", tags: ["important"] },
   { id: 2, title: "Second Task", description: "Description two", priority: "Medium", completed: false, category: "Personal", tags: ["home"] },
@@ -17,13 +16,10 @@ const INITIAL_TASKS: Task[] = [
   { id: 4, title: "Fourth Task", description: "Description four", priority: "Medium", completed: false, category: "Work", tags: ["office"] },
   { id: 5, title: "Fifth Task", description: "Description five", priority: "High", completed: false, category: "Personal", tags: ["urgent", "family"] },
 ];
-
 const STORAGE_KEY = "task-app-tasks";
-
 function AppContent() {
   const [storedTasks] = useLocalStorage<Task[]>(STORAGE_KEY, INITIAL_TASKS);
   const [tasks, dispatch] = useReducer(taskReducer, storedTasks);
-
   const setTasks = (value: Task[] | ((prev: Task[]) => Task[])) => {
     if (typeof value === 'function') {
       dispatch({ type: SET_TASKS, payload: value(tasks) });
@@ -31,11 +27,9 @@ function AppContent() {
       dispatch({ type: SET_TASKS, payload: value });
     }
   };
-
   const handleDelete = (id: string | number) => {
     dispatch({ type: SET_TASKS, payload: tasks.filter((t) => t.id !== id) });
   };
-
   return (
     <BrowserRouter>
       <div className="App">
@@ -60,19 +54,8 @@ function AppContent() {
             <Route path="/challenge/16-context-api-theme" element={<TaskApp tasks={tasks} setTasks={setTasks} showForm showFilterBar showStatsPanel />} />
             <Route path="/challenge/17-custom-hook-uselocalstorage" element={<TaskApp tasks={tasks} setTasks={setTasks} showForm showFilterBar showStatsPanel />} />
             <Route path="/challenge/18-usereducer-complex-state" element={<TaskApp tasks={tasks} setTasks={setTasks} showForm showFilterBar showStatsPanel />} />
-           <Route
-  path="/challenge/19-performance-optimization"
-  element={
-    <TaskApp
-      tasks={tasks}
-      setTasks={setTasks}
-      showForm
-      showFilterBar
-      showStatsPanel
-    />
-  }
-/>
-            <Route path="/challenge/21-react-router" element={<TaskApp tasks={tasks} setTasks={setTasks} showForm />} />
+            <Route path="/challenge/19-performance-optimization" element={<TaskApp tasks={tasks} setTasks={setTasks} showForm showFilterBar showStatsPanel />} />
+            <Route path="/challenge/21-react-router" element={<TaskApp tasks={tasks} setTasks={setTasks} showForm linkToTaskDetail />} />
             <Route path="/challenge/21-react-router/task/:id" element={<TaskDetailPage />} />
             <Route path="/challenge/22-data-fetching" element={<FetchDemoView />} />
           </Routes>
@@ -81,7 +64,6 @@ function AppContent() {
     </BrowserRouter>
   );
 }
-
 function App() {
   return (
     <ThemeProvider>
@@ -89,5 +71,4 @@ function App() {
     </ThemeProvider>
   );
 }
-
 export default App;

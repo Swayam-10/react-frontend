@@ -9181,17 +9181,17 @@
   {
     "challengeId": "21-react-router",
     "challengeName": "React Router - Routing and Navigation",
-    "timestamp": "2026-06-22T04:37:06.012Z",
+    "timestamp": "2026-06-23T07:59:45.470Z",
     "scores": {
       "functionalTests": 100,
-      "codeQuality": 100,
+      "codeQuality": 90,
       "architecture": 100,
       "bestPractices": 100,
       "e2eTests": 0,
-      "aiReview": 0
+      "aiReview": 83
     },
-    "totalScore": 70,
-    "passed": false,
+    "totalScore": 80.95,
+    "passed": true,
     "errors": [],
     "warnings": [],
     "testResults": {
@@ -9211,7 +9211,7 @@
               "fullName": " Challenge 21: React Router - Routing and Navigation TaskDetailPage should use useParams and render task detail or not found",
               "status": "passed",
               "title": "TaskDetailPage should use useParams and render task detail or not found",
-              "duration": 45,
+              "duration": 17,
               "failureMessages": []
             },
             {
@@ -9222,12 +9222,12 @@
               "fullName": " Challenge 21: React Router - Routing and Navigation TaskDetailPage should have back button with id task-detail-back",
               "status": "passed",
               "title": "TaskDetailPage should have back button with id task-detail-back",
-              "duration": 6,
+              "duration": 2,
               "failureMessages": []
             }
           ],
-          "startTime": 1782103037508,
-          "endTime": 1782103037559,
+          "startTime": 1782201587901,
+          "endTime": 1782201587921,
           "status": "passed",
           "message": "",
           "name": "C:/Users/swaya/OneDrive/Desktop/internship/challenge-engine-react/courses/01-react-fundamentals/project/tests/challenge-21.test.tsx"
@@ -9235,10 +9235,10 @@
       ]
     },
     "lintResults": {
-      "score": 100,
-      "passed": true,
-      "totalIssues": 0,
-      "errors": 0,
+      "score": 90,
+      "passed": false,
+      "totalIssues": 1,
+      "errors": 1,
       "warnings": 0,
       "details": [
         {
@@ -9283,13 +9283,24 @@
         },
         {
           "filePath": "C:\\Users\\swaya\\OneDrive\\Desktop\\internship\\challenge-engine-react\\courses\\01-react-fundamentals\\project\\src\\components\\TaskCard.tsx",
-          "messages": [],
+          "messages": [
+            {
+              "ruleId": null,
+              "fatal": true,
+              "severity": 2,
+              "message": "Parsing error: '{' or JSX element expected.",
+              "line": 105,
+              "column": 7,
+              "nodeType": null
+            }
+          ],
           "suppressedMessages": [],
-          "errorCount": 0,
-          "fatalErrorCount": 0,
+          "errorCount": 1,
+          "fatalErrorCount": 1,
           "warningCount": 0,
           "fixableErrorCount": 0,
           "fixableWarningCount": 0,
+          "source": "import React, { useEffect, useState } from \"react\";\r\nimport { Link } from 'react-router-dom'\r\ninterface TaskCardProps {\r\n  title: string;\r\n  description: string;\r\n  priority?: string;\r\n  completed?: boolean;\r\n  dueDate?: string;\r\n  linkToTaskDetail?: boolean\r\n  onToggle?: (id: string | number) => void;\r\n  onDelete?: (id: string | number) => void;\r\n  taskId?: string | number;\r\n  id?: string | number;\r\n  editingId?: string | number | null;\r\n  setEditingId?: (id: string | number | null) => void;\r\n  onUpdateTask?: (\r\n    id: string | number,\r\n    updates: {\r\n      title: string;\r\n      description: string;\r\n      priority: string;\r\n    }\r\n  ) => void;\r\n}\r\nfunction TaskCard({title,description,priority = \"Low\",completed,dueDate,onToggle,onDelete,taskId,id,editingId,setEditingId,onUpdateTask,linkToTaskDetail=false,\r\n}: TaskCardProps) {\r\n  const resolvedId = taskId ?? id ?? 0;\r\n  const isEditing = editingId === resolvedId;\r\n  const today = new Date();\r\n  today.setHours(0, 0, 0, 0);\r\n  const due = dueDate ? new Date(dueDate) : null;\r\n  if (due) due.setHours(0, 0, 0, 0);\r\n  const diffDays = due\r\n    ? Math.ceil((due.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))\r\n    : null;\r\n  const isOverdue = !!due && diffDays! < 0 && !completed;\r\n  const isDueToday = !!due && diffDays === 0;\r\n  const isDueSoon = !!due && diffDays! > 0 && diffDays! <= 3;\r\n  const [editTitle, setEditTitle] = useState(title);\r\n  const [editDescription, setEditDescription] = useState(description);\r\n  const [editPriority, setEditPriority] = useState(priority);\r\n  useEffect(() => {\r\n    if (isEditing) {\r\n      setEditTitle(title);\r\n      setEditDescription(description);\r\n      setEditPriority(priority);\r\n    }\r\n  }, [isEditing, title, description, priority]);\r\n  const handleSave = () => {\r\n    if (!editTitle.trim()) return;\r\n    onUpdateTask?.(resolvedId, {\r\n      title: editTitle,\r\n      description: editDescription,\r\n      priority: editPriority,\r\n    });\r\n    setEditingId?.(null);\r\n  };\r\n  const handleCancel = () => {\r\n    setEditTitle(title);\r\n    setEditDescription(description);\r\n    setEditPriority(priority);\r\n    setEditingId?.(null);\r\n  };\r\n  return (\r\n    <article\r\n      id=\"task-card\"\r\n      data-completed={completed ? \"true\" : undefined}\r\n      data-overdue={isOverdue ? \"true\" : \"false\"}\r\n      style={{\r\n        background: completed ? \"#e6ffe6\" : isOverdue ? \"#ffe6e6\" : undefined,\r\n        padding: \"10px\",\r\n        marginBottom: \"10px\",\r\n      }}\r\n    >\r\n      {onToggle && (\r\n        <input\r\n          type=\"checkbox\"\r\n          checked={!!completed}\r\n          onChange={() => onToggle(resolvedId)}\r\n        />\r\n      )}\r\n      {isEditing ? (\r\n        <>\r\n          <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />\r\n          <textarea value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />\r\n          <select value={editPriority} onChange={(e) => setEditPriority(e.target.value)}>\r\n            <option value=\"Low\">Low</option>\r\n            <option value=\"Medium\">Medium</option>\r\n            <option value=\"High\">High</option>\r\n          </select>\r\n          <button type=\"button\" onClick={handleSave}>Save</button>\r\n          <button type=\"button\" onClick={handleCancel}>Cancel</button>\r\n        </>\r\n      ) : (\r\n        <>\r\n          <h2\r\n  style={{\r\n    textDecoration: completed\r\n      ? 'line-through'\r\n      : 'none',\r\n  }}\r\n>\r\n  {linkToTaskDetail ? (\r\n  <Link\r\n    id=task-link-${resolvedId}\r\n    to=/challenge/21-react-router/task/${resolvedId}\r\n  >\r\n    {title}\r\n  </Link>\r\n) : (\r\n  title\r\n)}\r\n</h2>\r\n          <p style={completed ? { textDecoration: \"line-through\" } : undefined}>{description}</p>\r\n          <p>Priority: {priority}</p>\r\n          {dueDate && (\r\n            <p id=\"task-due-date\">Due: {new Date(dueDate).toLocaleDateString()}</p>\r\n          )}\r\n          {isOverdue && <p>Overdue</p>}\r\n          {isDueToday && <p>Due Today</p>}\r\n          {isDueSoon && <p>Due Soon</p>}\r\n          {setEditingId && (\r\n            <button type=\"button\" onClick={() => setEditingId(resolvedId)}>Edit</button>\r\n          )}\r\n          {onDelete && (\r\n            <button\r\n              type=\"button\"\r\n              onClick={() => {\r\n                if (window.confirm(\"Are you sure you want to delete this task?\")) {\r\n                  onDelete(resolvedId);\r\n                }\r\n              }}\r\n            >\r\n              Delete\r\n            </button>\r\n          )}\r\n        </>\r\n      )}\r\n    </article>\r\n  );\r\n}\r\nexport default React.memo(TaskCard);",
           "usedDeprecatedRules": [
             {
               "ruleId": "no-extra-semi",
@@ -9438,7 +9449,7 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 4,
+                          "duration": 1,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -9451,7 +9462,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-06-22T04:37:36.349Z",
+                          "startTime": "2026-06-23T07:59:55.082Z",
                           "annotations": [],
                           "attachments": []
                         },
@@ -9459,7 +9470,7 @@
                           "workerIndex": 1,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 4,
+                          "duration": 2,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -9472,7 +9483,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 1,
-                          "startTime": "2026-06-22T04:37:38.555Z",
+                          "startTime": "2026-06-23T07:59:56.432Z",
                           "annotations": [],
                           "attachments": [
                             {
@@ -9499,7 +9510,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 2,
-                          "startTime": "2026-06-22T04:37:40.814Z",
+                          "startTime": "2026-06-23T07:59:57.770Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -9528,7 +9539,7 @@
                           "workerIndex": 3,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 4,
+                          "duration": 1,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -9541,7 +9552,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-06-22T04:37:42.895Z",
+                          "startTime": "2026-06-23T07:59:59.049Z",
                           "annotations": [],
                           "attachments": []
                         },
@@ -9549,7 +9560,7 @@
                           "workerIndex": 4,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 2,
+                          "duration": 1,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -9562,7 +9573,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 1,
-                          "startTime": "2026-06-22T04:37:45.083Z",
+                          "startTime": "2026-06-23T08:00:00.376Z",
                           "annotations": [],
                           "attachments": [
                             {
@@ -9576,7 +9587,7 @@
                           "workerIndex": 5,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 2,
+                          "duration": 1,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -9589,7 +9600,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 2,
-                          "startTime": "2026-06-22T04:37:47.253Z",
+                          "startTime": "2026-06-23T08:00:01.688Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -9618,7 +9629,7 @@
                           "workerIndex": 6,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 2,
+                          "duration": 1,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -9631,7 +9642,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-06-22T04:37:49.364Z",
+                          "startTime": "2026-06-23T08:00:03.068Z",
                           "annotations": [],
                           "attachments": []
                         },
@@ -9639,7 +9650,7 @@
                           "workerIndex": 7,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 2,
+                          "duration": 1,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -9652,7 +9663,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 1,
-                          "startTime": "2026-06-22T04:37:51.238Z",
+                          "startTime": "2026-06-23T08:00:04.373Z",
                           "annotations": [],
                           "attachments": [
                             {
@@ -9666,7 +9677,7 @@
                           "workerIndex": 8,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 3,
+                          "duration": 1,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -9679,7 +9690,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 2,
-                          "startTime": "2026-06-22T04:37:53.592Z",
+                          "startTime": "2026-06-23T08:00:05.667Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -9702,27 +9713,41 @@
     },
     "aiReviewResults": {
       "challengeId": "21-react-router",
-      "timestamp": "2026-06-22T04:37:54.214Z",
-      "score": 0,
+      "timestamp": "2026-06-23T08:00:05.985Z",
+      "score": 83,
       "feedback": [],
-      "strengths": [],
-      "improvements": [],
-      "readability": 0,
-      "maintainability": 0,
-      "overall": "",
-      "error": "Groq API error (413): Request too large for model `llama-3.1-8b-instant` in organization `org_01ktb3kam2fdmvhyp9msy1rdy5` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Requested 6477, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"
+      "strengths": [
+        "The code is well-structured and easy to follow, with clear and concise function names and variable names.",
+        "The use of TypeScript and React hooks is well-implemented, making the code more maintainable and efficient.",
+        "The code is well-commented, making it easier for others to understand the functionality and purpose of each section."
+      ],
+      "improvements": [
+        "Some of the functions and variables are quite long and complex, making them difficult to read and understand. Consider breaking them down into smaller, more manageable pieces.",
+        "There are some repeated code patterns and logic, which could be extracted into reusable functions or components to reduce duplication and improve maintainability.",
+        "Some of the error handling and edge cases are not well-handled, which could lead to unexpected behavior or errors in certain scenarios. Consider adding more robust error handling and edge case checking."
+      ],
+      "readability": 85,
+      "maintainability": 80,
+      "overall": "The code is well-structured and maintainable, with a good balance of functionality and readability. However, there are some areas for improvement, particularly in terms of code organization and error handling. With some refactoring and optimization, this code could be even more efficient and effective."
     },
     "aiResults": {
       "challengeId": "21-react-router",
-      "timestamp": "2026-06-22T04:37:54.214Z",
-      "score": 0,
+      "timestamp": "2026-06-23T08:00:05.985Z",
+      "score": 83,
       "feedback": [],
-      "strengths": [],
-      "improvements": [],
-      "readability": 0,
-      "maintainability": 0,
-      "overall": "",
-      "error": "Groq API error (413): Request too large for model `llama-3.1-8b-instant` in organization `org_01ktb3kam2fdmvhyp9msy1rdy5` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Requested 6477, please reduce your message size and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"
+      "strengths": [
+        "The code is well-structured and easy to follow, with clear and concise function names and variable names.",
+        "The use of TypeScript and React hooks is well-implemented, making the code more maintainable and efficient.",
+        "The code is well-commented, making it easier for others to understand the functionality and purpose of each section."
+      ],
+      "improvements": [
+        "Some of the functions and variables are quite long and complex, making them difficult to read and understand. Consider breaking them down into smaller, more manageable pieces.",
+        "There are some repeated code patterns and logic, which could be extracted into reusable functions or components to reduce duplication and improve maintainability.",
+        "Some of the error handling and edge cases are not well-handled, which could lead to unexpected behavior or errors in certain scenarios. Consider adding more robust error handling and edge case checking."
+      ],
+      "readability": 85,
+      "maintainability": 80,
+      "overall": "The code is well-structured and maintainable, with a good balance of functionality and readability. However, there are some areas for improvement, particularly in terms of code organization and error handling. With some refactoring and optimization, this code could be even more efficient and effective."
     }
   },
   {
@@ -10124,7 +10149,7 @@
   {
     "challengeId": "23-useref-focus-management",
     "challengeName": "useRef - Focus Management",
-    "timestamp": "2026-06-22T04:53:43.355Z",
+    "timestamp": "2026-06-22T11:11:25.733Z",
     "scores": {
       "functionalTests": 100,
       "codeQuality": 100,
@@ -10154,7 +10179,7 @@
               "fullName": " Challenge 23: useRef - Focus Management FilterBar should render search input with id search-input",
               "status": "passed",
               "title": "FilterBar should render search input with id search-input",
-              "duration": 21,
+              "duration": 19,
               "failureMessages": []
             },
             {
@@ -10169,8 +10194,8 @@
               "failureMessages": []
             }
           ],
-          "startTime": 1782104025735,
-          "endTime": 1782104025760,
+          "startTime": 1782126688194,
+          "endTime": 1782126688217,
           "status": "passed",
           "message": "",
           "name": "C:/Users/swaya/OneDrive/Desktop/internship/challenge-engine-react/courses/01-react-fundamentals/project/tests/challenge-23.test.tsx"
@@ -10342,7 +10367,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-06-22T04:53:52.674Z",
+                          "startTime": "2026-06-22T11:11:35.386Z",
                           "annotations": [],
                           "attachments": []
                         },
@@ -10363,7 +10388,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 1,
-                          "startTime": "2026-06-22T04:53:53.874Z",
+                          "startTime": "2026-06-22T11:11:36.634Z",
                           "annotations": [],
                           "attachments": [
                             {
@@ -10390,7 +10415,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 2,
-                          "startTime": "2026-06-22T04:53:55.077Z",
+                          "startTime": "2026-06-22T11:11:37.863Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -10432,7 +10457,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-06-22T04:53:56.305Z",
+                          "startTime": "2026-06-22T11:11:39.081Z",
                           "annotations": [],
                           "attachments": []
                         },
@@ -10440,7 +10465,7 @@
                           "workerIndex": 4,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 1,
+                          "duration": 2,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -10453,7 +10478,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 1,
-                          "startTime": "2026-06-22T04:53:57.493Z",
+                          "startTime": "2026-06-22T11:11:40.285Z",
                           "annotations": [],
                           "attachments": [
                             {
@@ -10480,7 +10505,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 2,
-                          "startTime": "2026-06-22T04:53:58.718Z",
+                          "startTime": "2026-06-22T11:11:41.553Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -10509,7 +10534,7 @@
                           "workerIndex": 6,
                           "parallelIndex": 0,
                           "status": "failed",
-                          "duration": 1,
+                          "duration": 2,
                           "error": {
                             "message": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                             "stack": "Error: browserType.launch: Executable doesn't exist at C:\\Users\\swaya\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -10522,7 +10547,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-06-22T04:53:59.945Z",
+                          "startTime": "2026-06-22T11:11:42.734Z",
                           "annotations": [],
                           "attachments": []
                         },
@@ -10543,7 +10568,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 1,
-                          "startTime": "2026-06-22T04:54:01.147Z",
+                          "startTime": "2026-06-22T11:11:43.946Z",
                           "annotations": [],
                           "attachments": [
                             {
@@ -10570,7 +10595,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 2,
-                          "startTime": "2026-06-22T04:54:02.366Z",
+                          "startTime": "2026-06-22T11:11:45.182Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -10593,41 +10618,41 @@
     },
     "aiReviewResults": {
       "challengeId": "23-useref-focus-management",
-      "timestamp": "2026-06-22T04:54:02.689Z",
+      "timestamp": "2026-06-22T11:11:45.545Z",
       "score": 88,
       "feedback": [],
       "strengths": [
-        "The code is well-structured and easy to follow, with clear separation of concerns between components.",
-        "The use of TypeScript and functional components promotes maintainability and scalability.",
-        "The code is well-documented, with clear and concise comments explaining the purpose of each component and function."
+        "The code is well-organized and follows a consistent structure.",
+        "The use of TypeScript and functional components is a good practice.",
+        "The code includes clear and concise comments, making it easier to understand."
       ],
       "improvements": [
-        "Some of the function names could be more descriptive, such as `handleAddTask` and `handleToggle`. Consider using more descriptive names to improve code readability.",
-        "The `useEffect` hook is used extensively throughout the code. While this is a good practice, it may be beneficial to consider using a more modular approach to handling side effects, such as using a separate `useSideEffects` hook.",
-        "The code could benefit from more consistent naming conventions. For example, some components use camelCase, while others use PascalCase. Consider adopting a consistent naming convention throughout the codebase."
+        "Some functions, such as `handleAddTask` and `handleToggle`, are not used anywhere in the code. Consider removing them to declutter the code.",
+        "The `useEffect` hook in `FilterBar` is not necessary. Instead, you can use the `useRef` hook to focus the search input directly.",
+        "The code could benefit from more type annotations, especially in the `TaskApp` component."
       ],
       "readability": 85,
       "maintainability": 90,
-      "overall": "The code is well-structured and maintainable, with a clear separation of concerns between components. However, there are some areas for improvement, such as more descriptive function names and a more consistent naming convention. With some minor adjustments, this code could be even more readable and maintainable."
+      "overall": "The code is well-structured and follows good practices, but there are some areas that can be improved for better maintainability and readability."
     },
     "aiResults": {
       "challengeId": "23-useref-focus-management",
-      "timestamp": "2026-06-22T04:54:02.689Z",
+      "timestamp": "2026-06-22T11:11:45.545Z",
       "score": 88,
       "feedback": [],
       "strengths": [
-        "The code is well-structured and easy to follow, with clear separation of concerns between components.",
-        "The use of TypeScript and functional components promotes maintainability and scalability.",
-        "The code is well-documented, with clear and concise comments explaining the purpose of each component and function."
+        "The code is well-organized and follows a consistent structure.",
+        "The use of TypeScript and functional components is a good practice.",
+        "The code includes clear and concise comments, making it easier to understand."
       ],
       "improvements": [
-        "Some of the function names could be more descriptive, such as `handleAddTask` and `handleToggle`. Consider using more descriptive names to improve code readability.",
-        "The `useEffect` hook is used extensively throughout the code. While this is a good practice, it may be beneficial to consider using a more modular approach to handling side effects, such as using a separate `useSideEffects` hook.",
-        "The code could benefit from more consistent naming conventions. For example, some components use camelCase, while others use PascalCase. Consider adopting a consistent naming convention throughout the codebase."
+        "Some functions, such as `handleAddTask` and `handleToggle`, are not used anywhere in the code. Consider removing them to declutter the code.",
+        "The `useEffect` hook in `FilterBar` is not necessary. Instead, you can use the `useRef` hook to focus the search input directly.",
+        "The code could benefit from more type annotations, especially in the `TaskApp` component."
       ],
       "readability": 85,
       "maintainability": 90,
-      "overall": "The code is well-structured and maintainable, with a clear separation of concerns between components. However, there are some areas for improvement, such as more descriptive function names and a more consistent naming convention. With some minor adjustments, this code could be even more readable and maintainable."
+      "overall": "The code is well-structured and follows good practices, but there are some areas that can be improved for better maintainability and readability."
     }
   }
 ]

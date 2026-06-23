@@ -3,43 +3,26 @@ type FilterType =
   | 'all'
   | 'active'
   | 'completed'
-
 type SortType =
   | 'recent'
   | 'high-low'
   | 'low-high'
   | 'alphabetical'
   | 'due-date'
-
 interface FilterBarProps {
   filter?: FilterType
-
-  onFilterChange?: (
-    filter: FilterType
-  ) => void
-
+  onFilterChange?: (filter: FilterType) => void
   sortOrder?: SortType
-
-  onSortChange?: (
-    sort: SortType
-  ) => void
-
+  onSortChange?: (sort: SortType) => void
   search?: string
   searchQuery?: string
-
-  onSearchChange?: (
-    value: string
-  ) => void
-
+  onSearchChange?: (value: string) => void
   categories?: string[]
-
   selectedCategory?: string
-
   onCategoryChange?: (
     category: string
   ) => void
 }
-
 export default function FilterBar({
   filter = 'all',
   onFilterChange = () => {},
@@ -54,12 +37,9 @@ export default function FilterBar({
 }: FilterBarProps) {
   const searchInputRef =
   useRef<HTMLInputElement>(null)
-
 useEffect(() => {
   if (searchInputRef.current) {
-    searchInputRef.current.focus()
-  }
-}, [])
+    searchInputRef.current.focus()}}, [])
   return (
     <div id="filter-bar">
       <input
@@ -68,69 +48,35 @@ useEffect(() => {
         type="text"
         placeholder="Search tasks"
         value={search || searchQuery}
-        onChange={(e) =>
-          onSearchChange(e.target.value)
-        }
+        onChange={(e) =>onSearchChange(e.target.value)}
       />
-
       {search && (
         <button
           id="clear-search"
           type="button"
-          onClick={() =>
-            onSearchChange('')
-          }
-        >
-          Clear search
-        </button>
+          onClick={() =>onSearchChange('')}
+        >Clear search</button>
       )}
-
       <button
         data-active={filter === 'all'}
-        onClick={() =>
-          onFilterChange('all')
-        }
-      >
-        All
-      </button>
-
+        onClick={() =>onFilterChange('all')}
+      >All</button>
       <button
-        data-active={
-          filter === 'active'
-        }
-        onClick={() =>
-          onFilterChange('active')
-        }
-      >
-        Active
-      </button>
-
+        data-active={filter === 'active'}
+        onClick={() =>onFilterChange('active')}
+      >Active</button>
       <button
-        data-active={
-          filter === 'completed'
-        }
-        onClick={() =>
-          onFilterChange(
-            'completed'
-          )
-        }
-      >
-        Completed
-      </button>
-
+        data-active={filter === 'completed'}
+        onClick={() =>onFilterChange('completed')}
+      >Completed</button>
       <select
         id="category-filter"
         value={selectedCategory}
-        onChange={(e) =>
-          onCategoryChange(
-            e.target.value
-          )
-        }
+        onChange={(e) =>onCategoryChange(e.target.value)}
       >
         <option value="All categories">
           All categories
         </option>
-
         {categories.map(
           (category) => (
             <option
@@ -142,33 +88,23 @@ useEffect(() => {
           )
         )}
       </select>
-
       <select
         id="sort-order"
         value={sortOrder}
-        onChange={(e) =>
-          onSortChange(
-            e.target
-              .value as SortType
-          )
-        }
+        onChange={(e) =>onSortChange(e.target.value as SortType)}
       >
         <option value="recent">
           Recently Added
         </option>
-
         <option value="high-low">
           Priority: High to Low
         </option>
-
         <option value="low-high">
           Priority: Low to High
         </option>
-
         <option value="alphabetical">
           Alphabetical
         </option>
-
         <option value="due-date">
           Due Date (Soonest First)
         </option>
